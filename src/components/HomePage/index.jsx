@@ -7,7 +7,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, ButtonGroup, Button, ClickAwayListener, BackdropUnstyled } from '@mui/material';
+import { Box, ButtonGroup, Button, ClickAwayListener, BackdropUnstyled, Typography } from '@mui/material';
 
 const HomePage = () => {
   return (
@@ -16,6 +16,8 @@ const HomePage = () => {
         <title>هاردساب انیمه | AW_DL</title>
       </Helmet>
       <div>
+
+        <Typography component="div" style={{textAlign:"right",margin:"50px"}} variant="h5">انیمه های فصلی</Typography>
         <Paper
           component="form"
           sx={{
