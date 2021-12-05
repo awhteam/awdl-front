@@ -1,1 +1,1 @@
-export const baseUrl = 'https://awdlht.herokuapp.com';
+export const baseUrl = 'https://api.awdl.ml';
