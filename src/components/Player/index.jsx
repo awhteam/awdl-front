@@ -27,7 +27,7 @@ const CustomPlayer = () => {
     sources: [
       {
         src:
-          "https://dl.awdl.ml/[AWHT]100-man%20no%20Inochi%20no%20Ue%20ni%20Ore%20wa%20Tatteiru-07-720p.mkv",
+          "https://dl.awdl.ml/download/14384",
         type: "video/mp4",
       },
     ],
