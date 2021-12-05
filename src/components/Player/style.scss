@@ -1,1 +1,5 @@
 @import '/src/theme/main.scss';
+@import url('https://unpkg.com/plyr/dist/plyr.css');
+.plyr{
+    min-width: 640px;
+}
