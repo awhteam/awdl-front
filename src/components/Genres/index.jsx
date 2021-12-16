@@ -9,6 +9,8 @@ import apiInstance from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { MALCard } from "../Cards";
+import {genres} from "../../utils/genres"
+import { useParams } from "react-router";
 
 const createData = (input) => {
   const anime = input;
@@ -34,11 +36,13 @@ const createData = (input) => {
 
 
 const HomePage = () => {
+  const params = useParams();
+  const genre=params.genreId
   const [loading, setLoading] = useState(true);
   const [animeRawData, setAnimeRawData] = useState([]);
   useEffect(() => {
     axios
-      .get(`https://api.jikan.moe/v3/season/2021/fall`)
+      .get(`https://api.jikan.moe/v3/genre/anime/${genre}/1`)
       .then((response) => {
         console.log("animeData ", response.data.anime);
         setAnimeRawData(response.data.anime);
@@ -47,6 +51,7 @@ const HomePage = () => {
       .catch((err) => {
         console.log("error: ", err);
       });
+
   }, []);
 
  
@@ -63,7 +68,7 @@ const HomePage = () => {
           style={{ textAlign: "right", margin: "50px" }}
           variant="h5"
         >
-          انیمه های فصلی
+           انیمه های ژانر {genres[genre]["fa"]}
         </Typography>
         {loading ? (
           <div
@@ -91,6 +96,7 @@ const HomePage = () => {
               md={10}
               xl={8.5}
               xs={12}
+
             >
               {animeList.slice(0,10).map((anime, i) => (
                 <Grid item md={6} sm={6} xs={10} xl={4} key={i}>

@@ -1,3 +1,5 @@
+@import "/src/theme/main.scss";
+
 $mal-card-color: rgba(0, 102, 255, 0.247);
 
 .mal-card {
@@ -35,34 +37,21 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     flex-direction: row;
     padding: 3px 0;
     text-align: center;
+    justify-content: center;
+    font-size: 11px;
     .producer {
-      flex:1;
       color: #7f7f7f;
-      font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;
-      font-size: 11px;
-      margin: 0 8px;
-      padding: 0;
-      text-align: right;
-      @media screen and (min-width: 0) and (min-resolution: 0.001dpcm) {
-        width: 120px;
-      }
+      padding-right: 8px;
     }
-
     .eps {
       border-left: 1px solid #d8d8d8;
-      font-size: 11px;
+      border-right: 1px solid #d8d8d8;
       padding: 0 8px;
     }
+
     .source {
-      border-left: 1px solid #d8d8d8;
       color: #7f7f7f;
-      font-size: 11px;
-      padding: 0;
       padding-left: 8px;
-      text-align: left;
-      @media screen and (min-width: 0) and (min-resolution: 0.001dpcm) {
-        width: 120px;
-      }
     }
   }
 
@@ -74,7 +63,7 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     text-align: center;
     vertical-align: middle;
     .MuiChip-root {
-      margin:3px;
+      margin: 3px;
       background-color: rgba($mal-card-color, 0.02);
       font-size: 11px;
       color: rgb(116, 114, 114);
@@ -116,10 +105,9 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     direction: rtl;
     line-height: 1.8em;
     overflow: hidden;
-
-    &:hover{
-      overflow: auto;
-
+    @include scrollbars(10px, $mal-card-color, white);
+    &:hover {
+      overflow-y: scroll;
     }
   }
 

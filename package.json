@@ -23,6 +23,7 @@
     "deepmerge": "^4.2.2",
     "font-awesome": "^4.7.0",
     "formik": "^2.2.9",
+    "jalali-date": "^1.1.4",
     "jss-rtl": "^0.3.0",
     "load-script": "^2.0.0",
     "material-ui-image": "^3.3.2",

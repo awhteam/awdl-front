@@ -5,8 +5,8 @@ import ousamaImage from "../../assets/images/ousama_ranking.webp";
 import { Menu, MenuItem, Typography, Button, Grid, Chip } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { numberWithCommas } from "../../utils/helpers";
-
+import { numberWithCommas,convertDateToJalali} from "../../utils/helpers";
+import {genres} from "../../utils/genres"
 export const MALCard = (animeData) => {
   const anime = animeData.animeData;
   console.log("anime Data", anime);
@@ -14,7 +14,7 @@ export const MALCard = (animeData) => {
     <div className="mal-card">
       <div className="mal-card__title">
         <a
-          href={`https://myanimelist.net/anime/${anime.id}`}
+          href={`https://myanimelist.net/anime/${anime.mal_id}`}
           className="link-title"
         >
           {anime.title}
@@ -23,7 +23,7 @@ export const MALCard = (animeData) => {
       <div className="mal-card__prodsrc">
         <span className="producer">
           <a
-            href={`https://myanimelist.net/anime/producer/${anime.studio.id}`}
+            href={`https://myanimelist.net/anime/producer/${anime.studio.mal_id}`}
             title={anime.studio.name}
           >
             {anime.studio.name}
@@ -39,10 +39,10 @@ export const MALCard = (animeData) => {
       <div className="mal-card__genres">
         {anime.genres.map((genre) => (
           <Chip
-            label={genre.name}
+            label={genres[genre.mal_id]["fa"]}
             size="small"
-            component={Link}
-            to={`/anime/genre/${genre.id}`}
+            component={"a"}
+            href={`/anime/genre/${genre.mal_id}/${genres[genre.mal_id]["en"]}`}
           />
         ))}
       </div>
@@ -51,10 +51,10 @@ export const MALCard = (animeData) => {
         <img src={anime.poster} width="167" alt={anime.title} />
       </div>
 
-      <div className="mal-card__synopsis">{anime.synposis}</div>
+      <div className="mal-card__synopsis">{anime.synopsis}</div>
 
       <div className="mal-card__information">
-        <span className="info release-date">{anime.release_date}</span>
+        <span className="info release-date">{anime.type} - {convertDateToJalali(anime.release_date)}</span>
         <span className="info">
           <FontAwesomeIcon icon={["far", "star"]} className="mr4" />
           {anime.score}
@@ -70,21 +70,22 @@ export const MALCard = (animeData) => {
 
 export const AllCards = () => {
   const anime = {
-    id: 40834,
+    mal_id: 40834,
     title: "Ousama Ranking",
     studio: {
-      id: 858,
+      mal_id: 858,
       name: "Wit Studio",
     },
     epi: 23,
     source: "Web manga",
+    type: "TV",
     genres: [
       {
-        id: 1,
+        mal_id: 1,
         name: "ماجراجویی",
       },
       {
-        id: 2,
+        mal_id: 2,
         name: "فانتزی",
       },
     ],
