@@ -31,13 +31,12 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
   &__prodsrc {
     border-bottom: 2px dotted blue;
     border-top: 2px dotted blue;
-
     display: flex;
     flex-direction: row;
     padding: 3px 0;
     text-align: center;
     .producer {
-      // flex:1;
+      flex:1;
       color: #7f7f7f;
       font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;
       font-size: 11px;
@@ -112,14 +111,20 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     line-height: 1.4em;
     padding: 6px 4px 4px 8px;
     width: 155px;
-    overflow: auto;
     float: left;
     text-align: right;
     direction: rtl;
     line-height: 1.8em;
+    overflow: hidden;
+
+    &:hover{
+      overflow: auto;
+
+    }
   }
 
   &__information {
+    background-color: white;
     bottom: 0;
     display: table;
     height: 20px;
