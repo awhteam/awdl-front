@@ -8,8 +8,8 @@ import axios from "axios";
 import apiInstance from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import { MALCard } from "../Cards";
-import {genres} from "../../utils/genres"
+import { MALCard, MALCardLayout } from "../Cards";
+import { genres } from "../../utils/genres";
 import { useParams } from "react-router";
 
 const createData = (input) => {
@@ -18,26 +18,22 @@ const createData = (input) => {
   return {
     mal_id: anime.mal_id,
     title: anime.title,
-    studio: anime.producers[0],
+    studio: anime.producers,
     epi: anime.episodes,
     source: anime.source,
     genres: anime.genres.slice(0, 5),
-    poster: anime.image_url.replace(
-      "cdn.myanimelist.net",
-      "api.awdl.ml"
-    ),
+    poster: anime.image_url.replace("cdn.myanimelist.net", "api.awdl.ml"),
     synopsis: anime.synopsis,
     release_date: anime.airing_start,
-    type:anime.type,
+    type: anime.type,
     score: anime.score,
     members: anime.members,
   };
 };
 
-
-const HomePage = () => {
+export const Genres = () => {
   const params = useParams();
-  const genre=params.genreId
+  const genre = params.genreId;
   const [loading, setLoading] = useState(true);
   const [animeRawData, setAnimeRawData] = useState([]);
   useEffect(() => {
@@ -51,10 +47,7 @@ const HomePage = () => {
       .catch((err) => {
         console.log("error: ", err);
       });
-
   }, []);
-
- 
 
   const animeList = animeRawData.map(createData);
   return (
@@ -68,7 +61,7 @@ const HomePage = () => {
           style={{ textAlign: "right", margin: "50px" }}
           variant="h5"
         >
-           انیمه های ژانر {genres[genre]["fa"]}
+          انیمه های ژانر {genres[genre]["fa"]}
         </Typography>
         {loading ? (
           <div
@@ -86,29 +79,66 @@ const HomePage = () => {
             />
           </div>
         ) : (
-          <>
-            <Grid
-              container
-              style={{ margin: "auto" }}
-              alignItems="center"
-              justifyContent="center"
-              rowSpacing={4}
-              md={10}
-              xl={8.5}
-              xs={12}
-
-            >
-              {animeList.slice(0,10).map((anime, i) => (
-                <Grid item md={6} sm={6} xs={10} xl={4} key={i}>
-                  <MALCard animeData={anime} />
-                </Grid>
-              ))}
-            </Grid>
-          </>
+          <MALCardLayout animeList={animeList.slice(0, 10)} />
+  
         )}
       </div>
     </div>
   );
 };
 
-export default HomePage;
+export const Producers = () => {
+  const params = useParams();
+  const producer = params.producerId;
+  const [loading, setLoading] = useState(true);
+  const [animeRawData, setAnimeRawData] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`https://api.jikan.moe/v3/producer/${producer}/1`)
+      .then((response) => {
+        console.log("animeData ", response.data.anime);
+        setAnimeRawData(response.data.anime);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("error: ", err);
+      });
+  }, []);
+
+  const animeList = animeRawData.map(createData);
+  return (
+    <div style={{ overflowX: "hidden" }}>
+      <Helmet>
+        <title>هاردساب انیمه | AW_DL</title>
+      </Helmet>
+      <div>
+        <Typography
+          component="div"
+          style={{ textAlign: "right", margin: "50px" }}
+          variant="h5"
+          dir="rtl"
+        >
+          انیمه های استودیو {params.producerName}
+        </Typography>
+        {loading ? (
+          <div
+            style={{
+              padding: "100px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <ReactLoading
+              type="spinningBubbles"
+              color="blue"
+              height={100}
+              width={100}
+            />
+          </div>
+        ) : (
+          <MALCardLayout animeList={animeList.slice(0, 10)} />
+        )}
+      </div>
+    </div>
+  );
+};

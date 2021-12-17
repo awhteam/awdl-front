@@ -3,7 +3,7 @@ import HomePage from "../components/HomePage";
 import Player from "../components/Player";
 import NotFoundPage from "../components/NotFoundPage";
 import { AllCards } from "../components/Cards";
-import Genres from "../components/Genres";
+import {Genres,Producers} from "../components/Filters";
 
 const AppRouter = () => {
   return (
@@ -20,6 +20,9 @@ const AppRouter = () => {
         </Route>
         <Route path="/anime/genre/:genreId">
           <Genres />
+        </Route>
+        <Route path="/anime/producer/:producerId/:producerName">
+          <Producers />
         </Route>
         <Route path="*">
           <NotFoundPage />

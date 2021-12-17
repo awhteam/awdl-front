@@ -1,5 +1,3 @@
-
-
 export const genres = {
   1: {
     en: "Action",
@@ -78,3 +76,5 @@ export const genres = {
     fa: "زندگی حرفه‌ای",
   },
 };
+
+

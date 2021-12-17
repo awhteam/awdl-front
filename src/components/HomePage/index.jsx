@@ -16,7 +16,7 @@ const createData = (input) => {
   return {
     mal_id: anime.mal_id,
     title: anime.title,
-    studio: anime.producers[0],
+    studio: anime.producers,
     epi: anime.episodes,
     source: anime.source,
     genres: anime.genres.slice(0, 5),
