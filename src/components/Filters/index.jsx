@@ -25,8 +25,9 @@ import {
   fa_demographics,
   fa_sections,
 } from "../../utils/translations";
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { useParams } from "react-router";
+import Navbar from "../Navbar";
 
 const createData = (input) => {
   const anime = input;
@@ -70,10 +71,9 @@ export const Genres = () => {
         setAnimeData(response.data);
         setLoading(false);
         if (section == "studio") {
-          const temp=response.data.data[0].studios_names[sectionId]
+          const temp = response.data.data[0].studios_names[sectionId];
           setTitle(temp);
           setFaTitle(temp);
-
         } else {
           setTitle(tables[section][sectionId]["en"]);
           setFaTitle(tables[section][sectionId]["fa"]);
@@ -87,7 +87,9 @@ export const Genres = () => {
   const animeList = animeData.data;
   return (
     <div style={{ overflowX: "hidden" }}>
-      <div>
+      <Navbar />
+
+      <div style={{marginTop:"100px"}}>
         {loading ? (
           <div
             style={{
@@ -106,16 +108,14 @@ export const Genres = () => {
         ) : (
           <>
             <Helmet>
-              <title>{`${title}| AW_DL`}</title>
+              <title>{`${title} | AW_DL`}</title>
             </Helmet>
             <div className="mal-card-layout">
-              <Breadcrumbs  dir="rtl"  separator={<NavigateBeforeIcon fontSize="small" />}>
-                <Link
-                  underline="hover"
-                  key="1"
-                  color="inherit"
-                  href="/"
-                >
+              <Breadcrumbs
+                dir="rtl"
+                separator={<NavigateBeforeIcon fontSize="small" />}
+              >
+                <Link underline="hover" key="1" color="inherit" href="/">
                   خانه
                 </Link>
                 <Link
@@ -127,7 +127,7 @@ export const Genres = () => {
                   انیمه ها
                 </Link>
                 <Typography key="3" color="text.primary">
-                {fa_sections[section]} {faTitle}
+                  {fa_sections[section]} {faTitle}
                 </Typography>
               </Breadcrumbs>
 

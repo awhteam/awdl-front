@@ -1,0 +1,20 @@
+@import "/src/theme/main.scss";
+
+.desktop_navbar {
+  &__logo {
+
+    @media screen and (min-width: 900px) {
+      margin-right: 50px;
+    }
+  }
+}
+
+$mal-card-color: rgba(0, 102, 255, 0.247);
+.navbar-genres{
+   
+    .MuiMenu-paper{
+        max-height: 300px;
+        @include scrollbars(10px, $mal-card-color, white);
+    }
+    
+}
