@@ -14,77 +14,96 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { numberWithCommas, convertDateToJalali } from "../../utils/helpers";
-import { genres } from "../../utils/genres";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { baseUrl } from "../../utils/constants";
+import {
+  fa_formats,
+  fa_seasons,
+  fa_genres,
+  fa_themes,
+  fa_demographics
+} from "../../utils/translations";
 
-export const MALCard = ({anime}) => {
+
+
+export const MALCard = ({ anime }) => {
+  const title=(anime.title[1])?anime.title[1]:anime.title[0]
   return (
     <div className="mal-card">
       <div className="mal-card__title">
         <a
-          href={`https://myanimelist.net/anime/${anime.mal_id}`}
+          href={`/anime/${anime.mal_id}`}
+          target="_blank"
           className="link-title"
         >
-          {anime.title}
+          {title}
         </a>
       </div>
       <div className="mal-card__prodsrc">
         <span className="producer">
-          {anime.studio.map((studio, i) => (
+          {anime.studios.map((studio, i) => (
             <>
               {i >= 1 && ", "}
               <a
-                href={`/anime/producer/${studio.mal_id}/${studio.name}`}
-                title={studio.name}
+                href={`/anime/producer/${studio.mal_id}/temp"`}
+                title={"temp"}
                 key={i}
               >
-                {studio.name}
+                {"temp"}
               </a>
             </>
           ))}
         </span>
         <div className="eps">
           <span>
-            {anime.epi ? anime.epi : "?"} ep{anime.epi > 1 && "s"}
+            {anime.episodes ? anime.episodes : "?"} ep
+            {anime.episodes > 1 && "s"}
           </span>
         </div>
         <span className="source">{anime.source}</span>
       </div>
       <div className="mal-card__genres">
-        {anime.genres.map((genre) => (
-          <Chip
-            label={genres[genre.mal_id]["fa"]}
-            size="small"
-            component={"a"}
-            href={`/anime/genre/${genre.mal_id}/${genres[genre.mal_id]["en"]}`}
-          />
-        ))}
+        {anime.genres.map(
+          (genre) =>
+            fa_genres[genre] && (
+              <Chip
+                label={fa_genres[genre]["fa"]}
+                size="small"
+                component={"a"}
+                href={`/anime/genre/${genre}/${fa_genres[genre]["en"]}`}
+              />
+            )
+        )}
       </div>
 
       <div className="mal-card__image">
-        <img src={anime.poster} width="167" alt={anime.title} />
+        <img
+          src={`${baseUrl}${anime.cover_image}`}
+          width="167"
+          alt={title}
+        />
       </div>
 
       <div className="mal-card__synopsis">{anime.synopsis}</div>
 
       <div className="mal-card__information">
         <span className="info release-date">
-          {anime.type} - {convertDateToJalali(anime.release_date)}
+          {anime.format} - {convertDateToJalali(anime.aired_date)}
         </span>
         <span className="info">
           <FontAwesomeIcon icon={["far", "star"]} className="mr4" />
-          {anime.score}
+          {anime.mal_score}
         </span>
         <span className="info">
           <FontAwesomeIcon icon="user" className="mr4" />
-          {numberWithCommas(anime.members)}
+          {numberWithCommas(anime.mal_members)}
         </span>
       </div>
     </div>
   );
 };
 
-export const MALCardLayout = ({animeList}) => {
+export const MALCardLayout = ({ animeList }) => {
   return (
     <Grid
       container
@@ -120,7 +139,7 @@ export const MALCardLayout = ({animeList}) => {
 //   );
 // };
 
-export const WideCard = ({anime}) => {
+export const WideCard = ({ anime }) => {
   return (
     <div className="wide-card">
       <div className="wide-card__image">
@@ -133,11 +152,11 @@ export const WideCard = ({anime}) => {
         <div className="genres">
           {anime.genres.map((genre) => (
             <Chip
-              label={genres[genre.mal_id]["fa"]}
+              label={fa_genres[genre.mal_id]["fa"]}
               size="small"
               component={"a"}
               href={`/anime/genre/${genre.mal_id}/${
-                genres[genre.mal_id]["en"]
+                fa_genres[genre.mal_id]["en"]
               }`}
             />
           ))}
@@ -168,7 +187,7 @@ export const WideCard = ({anime}) => {
   );
 };
 
-export const WideCardDetailCard = ({anime,setShowList}) => {
+export const WideCardDetailCard = ({ anime, setShowList }) => {
   const handleCloseBtn = () => {
     setShowList(true);
   };
@@ -198,11 +217,11 @@ export const WideCardDetailCard = ({anime,setShowList}) => {
               <p>
                 {anime.genres.map((genre) => (
                   <Chip
-                    label={genres[genre.mal_id]["fa"]}
+                    label={fa_genres[genre.mal_id]["fa"]}
                     size="small"
                     component={"a"}
                     href={`/anime/genre/${genre.mal_id}/${
-                      genres[genre.mal_id]["en"]
+                      fa_genres[genre.mal_id]["en"]
                     }`}
                   />
                 ))}{" "}
@@ -214,7 +233,10 @@ export const WideCardDetailCard = ({anime,setShowList}) => {
             </div>
 
             <button className="watch">دانلود کن</button>
-            <button className="watch" onClick={handleCloseBtn}> بازگشت</button>
+            <button className="watch" onClick={handleCloseBtn}>
+              {" "}
+              بازگشت
+            </button>
           </div>
         </section>
 
@@ -307,7 +329,7 @@ export const AllCards = () => {
           </div>
         </div>
       ) : (
-        <WideCardDetailCard anime={selectedAnime}  setShowList={setShowList}/>
+        <WideCardDetailCard anime={selectedAnime} setShowList={setShowList} />
       )}
     </div>
   );

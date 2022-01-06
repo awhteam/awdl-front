@@ -198,5 +198,13 @@
             "en": "friday",
             "fa": "جمعه"
         }
+    },
+    "Format":{
+        "TV":"سریالی",
+        "MOVIE":"سینمایی",
+        "TV_SHORT":"سریالی کوتاه",
+        "SPECIAL":"SPECIAL",
+        "OVA":"OVA",
+        "ONA":"ONA"
     }
 }

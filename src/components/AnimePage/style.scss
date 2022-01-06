@@ -1,0 +1,93 @@
+@import "/src/theme/main.scss";
+
+.anime-page {
+  .banner {
+    background-position: 50% 35%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+    margin-top: -58px;
+    .shadow {
+      background: linear-gradient(
+        180deg,
+        rgba(6, 13, 34, 0) 40%,
+        rgba(6, 13, 34, 0.6)
+      );
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .header {
+    position: relative;
+    .container {
+      margin: 0 auto;
+      min-width: 320px;
+      padding-left: 20px;
+      padding-right: 20px;
+      width: 100%;
+      display: grid;
+      grid-column-gap: 30px;
+      grid-template-columns: auto 215px;
+      @media (min-width: 1040px) and (max-width: 1540px) {
+        max-width: 1140px;
+        padding-left: 50px;
+        padding-right: 50px;
+      }
+      .cover-wrap {
+        position: relative;
+      }
+      .overlap-banner {
+        margin-top: -125px;
+      }
+
+      .cover {
+        background-color: rgba(212, 230, 245, 0.5);
+        border-radius: 2px;
+        box-shadow: 0 0 29px rgba(49, 54, 68, 0.25);
+        margin-top: 15px;
+        width: 100%;
+      }
+      .content {
+        display: inline-grid;
+        grid-template-rows: -webkit-min-content -webkit-min-content auto;
+        grid-template-rows: min-content min-content auto;
+        padding-top: 25px;
+        .description {
+          color: rgb(122, 133, 143);
+          font-size: 12;
+          line-height: 1.5;
+          margin: 0;
+          max-width: 900px;
+          padding: 15px 0;
+          transition: 0.2s;
+        }
+      }
+    }
+  }
+
+  .anime-details {
+    padding: 10px 250px;
+    display: flex;
+    flex-direction: row;
+    .section {
+      padding-left: 120px;
+      padding-right: 10px;
+      line-height: 1.5rem;
+      div {
+        justify-content: center;
+        text-align: right;
+
+        span {
+          min-width: 60px;
+          display: inline-block;
+          text-align: right;
+        }
+      }
+
+      margin-top: 50px;
+      flex-direction: column;
+      font-size: 10;
+    }
+  }
+}

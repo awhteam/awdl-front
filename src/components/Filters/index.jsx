@@ -9,7 +9,14 @@ import apiInstance from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { MALCard, MALCardLayout } from "../Cards";
-import { genres } from "../../utils/genres";
+import {
+  fa_formats,
+  fa_seasons,
+  fa_genres,
+  fa_themes,
+  fa_demographics
+} from "../../utils/translations";
+
 import { useParams } from "react-router";
 
 const createData = (input) => {
@@ -33,15 +40,22 @@ const createData = (input) => {
 
 export const Genres = () => {
   const params = useParams();
-  const genre = params.genreId;
+  const sectionId = params.sectionId;
+  const section = params.section;
+  const tables={
+    genre:fa_genres,
+    theme:fa_themes,
+    demographic: fa_demographics
+  }
+  const table=tables[section]
   const [loading, setLoading] = useState(true);
-  const [animeRawData, setAnimeRawData] = useState([]);
+  const [animeData, setAnimeData] = useState([]);
   useEffect(() => {
     axios
-      .get(`https://api.jikan.moe/v3/genre/anime/${genre}/1`)
+      .get(`https://api.awdl.ml/${section}/anime/${sectionId}/0`)
       .then((response) => {
-        console.log("animeData ", response.data.anime);
-        setAnimeRawData(response.data.anime);
+        console.log("animeData ", response.data);
+        setAnimeData(response.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -49,20 +63,20 @@ export const Genres = () => {
       });
   }, []);
 
-  const animeList = animeRawData.map(createData);
+  const animeList = animeData.data;
   return (
     <div style={{ overflowX: "hidden" }}>
       <Helmet>
-        <title>هاردساب انیمه | AW_DL</title>
+        <title>{table[sectionId]["en"] }| AW_DL</title>
       </Helmet>
       <div>
-        <Typography
+        {/* <Typography
           component="div"
           style={{ textAlign: "right", margin: "50px" }}
           variant="h5"
         >
-          انیمه های ژانر {genres[genre]["fa"]}
-        </Typography>
+          انیمه های ژانر {table[sectionId]["fa"]}
+        </Typography> */}
         {loading ? (
           <div
             style={{
@@ -79,8 +93,7 @@ export const Genres = () => {
             />
           </div>
         ) : (
-          <MALCardLayout animeList={animeList.slice(0, 10)} />
-  
+          <MALCardLayout animeList={animeList} />
         )}
       </div>
     </div>

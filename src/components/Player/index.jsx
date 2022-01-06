@@ -27,7 +27,7 @@ const CustomPlayer = () => {
     sources: [
       {
         src:
-          "https://dl.awdl.ml/download/14384",
+          "https://eu.cdn.cloudam.cc/dl/1/417797/694923/287679/185.132.132.216/30ad59adb35c7a07aeba83719311e34827/movies/s/Spider_Man_No_Way_Home_2021_1080p_HDCam_C1NEM4_30NAMA.mkv",
         type: "video/mp4",
       },
     ],
