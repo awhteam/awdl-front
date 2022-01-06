@@ -22,9 +22,9 @@ const AppRouter = () => {
         <Route path="/anime/:section/:sectionId">
           <Genres/>
         </Route>
-        <Route path="/anime/producer/:producerId/:producerName">
+        {/* <Route path="/anime/producer/:producerId/:producerName">
           <Producers />
-        </Route>
+        </Route> */}
         <Route path="/anime/:animeId">
           <AnimePage />
         </Route>

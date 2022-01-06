@@ -191,3 +191,11 @@ export const fa_demographics = {
     fa: "شونن",
   },
 };
+
+
+export const fa_sections = {
+  genre: "ژانر",
+  theme: "تم",
+  demographic:"دموگرافیک",
+  studio:"استودیو"
+};

@@ -10,6 +10,7 @@ import {
   Grid,
   Chip,
   IconButton,
+  Box,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
@@ -21,13 +22,15 @@ import {
   fa_seasons,
   fa_genres,
   fa_themes,
-  fa_demographics
+  fa_demographics,
 } from "../../utils/translations";
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 
 export const MALCard = ({ anime }) => {
-  const title=(anime.title[1])?anime.title[1]:anime.title[0]
+  const title = anime.title[1] ? anime.title[1] : anime.title[0];
   return (
     <div className="mal-card">
       <div className="mal-card__title">
@@ -41,15 +44,16 @@ export const MALCard = ({ anime }) => {
       </div>
       <div className="mal-card__prodsrc">
         <span className="producer">
-          {anime.studios.map((studio, i) => (
+          
+          {anime.studios_names && Object.entries(anime.studios_names).map(([studioId, studioName],i) => (
             <>
               {i >= 1 && ", "}
               <a
-                href={`/anime/producer/${studio.mal_id}/temp"`}
-                title={"temp"}
+                href={`/anime/studio/${studioId}/${studioName}`}
+                title={studioName}
                 key={i}
               >
-                {"temp"}
+                {studioName}
               </a>
             </>
           ))}
@@ -64,24 +68,21 @@ export const MALCard = ({ anime }) => {
       </div>
       <div className="mal-card__genres">
         {anime.genres.map(
-          (genre) =>
+          (genre, i) =>
             fa_genres[genre] && (
               <Chip
                 label={fa_genres[genre]["fa"]}
                 size="small"
                 component={"a"}
                 href={`/anime/genre/${genre}/${fa_genres[genre]["en"]}`}
+                key={i}
               />
             )
         )}
       </div>
 
       <div className="mal-card__image">
-        <img
-          src={`${baseUrl}${anime.cover_image}`}
-          width="167"
-          alt={title}
-        />
+        <img src={`${baseUrl}${anime.cover_image}`} width="167" alt={title} />
       </div>
 
       <div className="mal-card__synopsis">{anime.synopsis}</div>
@@ -104,23 +105,41 @@ export const MALCard = ({ anime }) => {
 };
 
 export const MALCardLayout = ({ animeList }) => {
+
+
+  const customTheme = createTheme({
+    typography: {
+      fontFamily: 'iranyekan, Arial',
+    },
+
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 700,
+        md: 900,
+        lg: 1050,
+        xl: 1536,
+      },
+    },
+  });
+
+
   return (
+    <ThemeProvider theme={customTheme}>
     <Grid
       container
-      style={{ margin: "auto" }}
       alignItems="center"
       justifyContent="center"
       rowSpacing={4}
-      md={10}
-      xl={8.5}
-      xs={12}
+      style={{ margin: "auto" }}
     >
       {animeList.map((anime, i) => (
-        <Grid item md={6} sm={6} xs={10} xl={4} key={i}>
-          <MALCard anime={anime} />
+        <Grid item md={6} sm={6} xs={10} lg={4} key={`grid-mal-card${i}`}>
+          <MALCard key={`mal-card_${i}`} anime={anime} />
         </Grid>
       ))}
     </Grid>
+    </ThemeProvider>
   );
 };
 

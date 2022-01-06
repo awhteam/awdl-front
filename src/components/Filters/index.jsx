@@ -1,8 +1,16 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
 import * as React from "react";
-import { Box, ButtonGroup, Button, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  ButtonGroup,
+  Button,
+  Grid,
+  Typography,
+  Breadcrumbs,
+  Link,
+} from "@mui/material";
 import { baseUrl } from "../../utils/constants";
 import axios from "axios";
 import apiInstance from "../../utils/axiosConfig";
@@ -14,9 +22,10 @@ import {
   fa_seasons,
   fa_genres,
   fa_themes,
-  fa_demographics
+  fa_demographics,
+  fa_sections,
 } from "../../utils/translations";
-
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { useParams } from "react-router";
 
 const createData = (input) => {
@@ -42,21 +51,33 @@ export const Genres = () => {
   const params = useParams();
   const sectionId = params.sectionId;
   const section = params.section;
-  const tables={
-    genre:fa_genres,
-    theme:fa_themes,
-    demographic: fa_demographics
-  }
-  const table=tables[section]
+
+  const tables = {
+    genre: fa_genres,
+    theme: fa_themes,
+    demographic: fa_demographics,
+  };
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
+  const [title, setTitle] = useState([]);
+  const [faTitle, setFaTitle] = useState([]);
+
   useEffect(() => {
     axios
-      .get(`https://api.awdl.ml/${section}/anime/${sectionId}/0`)
+      .get(`${baseUrl}/anime/${section}/${sectionId}/0`)
       .then((response) => {
         console.log("animeData ", response.data);
         setAnimeData(response.data);
         setLoading(false);
+        if (section == "studio") {
+          const temp=response.data.data[0].studios_names[sectionId]
+          setTitle(temp);
+          setFaTitle(temp);
+
+        } else {
+          setTitle(tables[section][sectionId]["en"]);
+          setFaTitle(tables[section][sectionId]["fa"]);
+        }
       })
       .catch((err) => {
         console.log("error: ", err);
@@ -66,17 +87,7 @@ export const Genres = () => {
   const animeList = animeData.data;
   return (
     <div style={{ overflowX: "hidden" }}>
-      <Helmet>
-        <title>{table[sectionId]["en"] }| AW_DL</title>
-      </Helmet>
       <div>
-        {/* <Typography
-          component="div"
-          style={{ textAlign: "right", margin: "50px" }}
-          variant="h5"
-        >
-          انیمه های ژانر {table[sectionId]["fa"]}
-        </Typography> */}
         {loading ? (
           <div
             style={{
@@ -93,7 +104,36 @@ export const Genres = () => {
             />
           </div>
         ) : (
-          <MALCardLayout animeList={animeList} />
+          <>
+            <Helmet>
+              <title>{`${title}| AW_DL`}</title>
+            </Helmet>
+            <div className="mal-card-layout">
+              <Breadcrumbs  dir="rtl"  separator={<NavigateBeforeIcon fontSize="small" />}>
+                <Link
+                  underline="hover"
+                  key="1"
+                  color="inherit"
+                  href="/"
+                >
+                  خانه
+                </Link>
+                <Link
+                  underline="hover"
+                  key="2"
+                  color="inherit"
+                  href={`/anime/`}
+                >
+                  انیمه ها
+                </Link>
+                <Typography key="3" color="text.primary">
+                {fa_sections[section]} {faTitle}
+                </Typography>
+              </Breadcrumbs>
+
+              <MALCardLayout animeList={animeList} />
+            </div>
+          </>
         )}
       </div>
     </div>
