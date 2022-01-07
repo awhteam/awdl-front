@@ -1,6 +1,7 @@
 @import "/src/theme/main.scss";
 
-$mal-card-color: rgba(0, 102, 255, 0.247);
+// $mal-card-color: rgba(0, 102, 255, 0.247);
+$mal-card-color: #255ead33;
 
 .mal-card {
   // border: 1px solid blue;
@@ -20,19 +21,27 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     transition: all 0.3s;
   }
   &__title {
-    border-top: 2px solid blue;
-
+    border-top: 2px solid #255dad;
     width: 334px;
     display: table-cell;
     height: 40px;
     margin: 0;
     text-align: center;
     vertical-align: middle;
+    a {
+      color: rgb(49, 63, 75);
+      &:hover {
+        color: #255dad;
+      }
+    }
   }
 
   &__prodsrc {
-    border-bottom: 2px dotted blue;
-    border-top: 2px dotted blue;
+    // background-color: $mal-card-color;
+    background: radial-gradient(#ffffff, $mal-card-color);
+
+    border-bottom: 2px dotted #255dad;
+    border-top: 2px dotted #255dad;
     display: flex;
     flex-direction: row;
     padding: 3px 0;
@@ -40,7 +49,9 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     justify-content: center;
     font-size: 11px;
     .producer {
-      color: #7f7f7f;
+      a {
+        color: rgb(15, 70, 119);
+      }
       padding-right: 8px;
     }
     .eps {
@@ -56,6 +67,7 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
   }
 
   &__genres {
+    background-color: #f9f9f9;
     display: table-cell;
     margin: 0;
     width: 334px;
@@ -64,17 +76,17 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     vertical-align: middle;
     .MuiChip-root {
       margin: 3px;
-      background-color: rgba($mal-card-color, 0.02);
-      font-size: 11px;
-      color: rgb(116, 114, 114);
+      background-color: rgba($mal-card-color, 0.1);
+      font-size: 9px;
+      color: rgb(77, 75, 75);
       cursor: pointer;
       &:hover {
         background-color: $mal-card-color;
-        color: blue;
+        color: #255dad;
       }
       &:active {
         background-color: $mal-card-color;
-        color: blue;
+        color: #255dad;
       }
     }
   }
@@ -122,6 +134,7 @@ $mal-card-color: rgba(0, 102, 255, 0.247);
     z-index: 2;
     .info {
       background: radial-gradient(#ffffff, $mal-card-color);
+      border-bottom: 2px solid #255dad;
       color: #585858;
       display: table-cell;
       font-size: 10px;
@@ -420,5 +433,3 @@ $wide-card-color: rgb(163, 160, 192);
     }
   }
 }
-
-

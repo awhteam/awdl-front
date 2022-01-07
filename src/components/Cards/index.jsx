@@ -95,7 +95,7 @@ export const MALCard = ({ anime }) => {
           <FontAwesomeIcon icon={["far", "star"]} className="mr4" />
           {anime.mal_score}
         </span>
-        <span className="info">
+        <span className="info members">
           <FontAwesomeIcon icon="user" className="mr4" />
           {numberWithCommas(anime.mal_members)}
         </span>

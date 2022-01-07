@@ -101,7 +101,7 @@ export const Genres = () => {
           >
             <ReactLoading
               type="spinningBubbles"
-              color="blue"
+              color="#255DAD"
               height={100}
               width={100}
             />
@@ -187,7 +187,7 @@ export const TopAnimes = () => {
           >
             <ReactLoading
               type="spinningBubbles"
-              color="blue"
+              color="#255DAD"
               height={100}
               width={100}
             />
@@ -278,7 +278,7 @@ export const Producers = () => {
           >
             <ReactLoading
               type="spinningBubbles"
-              color="blue"
+              color="#255DAD"
               height={100}
               width={100}
             />
