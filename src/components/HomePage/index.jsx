@@ -30,7 +30,6 @@ const AnimeCard = ({ anime }) => {
 const AnimeSlider = ({ animeList }) => {
   return (
     <div className="carousal-container" >
-      <div style={{ width: "90%", maxWidth: "90%" }}>
         <Swiper slidesPerView={"auto"} navigation={useMobile() ? false : true}>
           {animeList.map((anime, i) => (
             <SwiperSlide key={i}>
@@ -38,18 +37,17 @@ const AnimeSlider = ({ animeList }) => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
     </div>
   );
 };
 
-const BestAnime = () => {
+const HomePageSlider = ({title,url}) => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/anime/top`)
+      .get(`${baseUrl}${url}`)
       .then((response) => {
         console.log("animeData ", response.data);
         setAnimeData(response.data);
@@ -59,38 +57,50 @@ const BestAnime = () => {
         console.log("error: ", err);
       });
   }, []);
-  const animeList = animeData.data;
+  const animeList = animeData;
 
   return (
-    <div dir="rtl" style={{ margin: "100px" }}>
-      <h2>بهترین انیمه ها</h2>
+    <div dir="rtl" className="home-page-slider">
+      <h3>{title}</h3>
 
       {loading ? (
         <div
           style={{
-            padding: "100px",
             display: "flex",
             justifyContent: "center",
           }}
         >
           <ReactLoading
-            type="spinningBubbles"
-            color="blue"
+            type="cylon"
+            color="#255DAD"
             height={100}
             width={100}
           />
         </div>
       ) : (
-        <AnimeSlider animeList={animeList} />
+        <AnimeSlider  animeList={animeList} />
       )}
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
 const HomePage = () => {
   return (
     <div>
       <Navbar />
-      <BestAnime />
+      <HomePageSlider title="بهترین انیمه ها"  url="/20anime/top" />
+      <HomePageSlider title="جدیدترین ها"  url="/20anime/recent/added" />
+      <HomePageSlider title="آخرین آپدیت شده ها"  url="/20anime/recent/updated" />
+
     </div>
   );
 };
