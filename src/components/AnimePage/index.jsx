@@ -160,12 +160,12 @@ const AnimePage = () => {
           <div className="anime-details" dir="rtl">
             {isMobile && (
               <p className="summary">
-                <h4> خلاصه داستان:</h4>
+                <h3> خلاصه داستان:</h3>
 
                 <p className="description">{animeData.synopsis}</p>
               </p>
             )}
-            <h4>اطلاعات بیشتر</h4>
+            <h3>اطلاعات بیشتر</h3>
 
             {animeDetails.map((section, idx) => (
               <div

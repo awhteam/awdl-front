@@ -41,7 +41,7 @@
       .cover-wrap-inner {
         @media (max-width: 760px) {
           display: grid;
-          grid-template-columns: 100px auto;
+          grid-template-columns: 150px auto;
           grid-gap: 20px;
           align-items: flex-end;
         }
@@ -59,9 +59,6 @@
         box-shadow: 0 0 29px rgba(49, 54, 68, 0.25);
         margin-top: 15px;
         width: 100%;
-        @media (max-width: 760px) {
-          max-width: 100px;
-        }
       }
       .content {
         display: inline-grid;
@@ -83,16 +80,21 @@
         }
       }
       h1 {
+        direction: ltr;
+        text-align: right;
         @media (max-width: 760px) {
-          font-size: 16px;
           font-weight: 500;
-          margin-bottom: 50px;
+          margin-bottom: 40px;
         }
       }
     }
   }
 
   .anime-details {
+    @media (max-width: 760px) {
+      margin-top: -100px;
+
+    }
     max-width: 1400px;
     padding: 10px 10px;
     display: flex;
@@ -133,8 +135,8 @@
 
         .description {
             color: rgb(122, 133, 143);
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.8;
             margin: 0;
             max-width: 900px;
             padding: 15px 0;

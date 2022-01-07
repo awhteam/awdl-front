@@ -160,7 +160,7 @@ export const TopAnimes = () => {
   console.log(urlKey);
   useEffect(() => {
     axios
-      .get(`${baseUrl}/anime/top?${search}`)
+      .get(`${baseUrl}/anime/top${search}`)
       .then((response) => {
         console.log("animeData ", response.data);
         setAnimeData(response.data);
