@@ -15,8 +15,11 @@ import {
   fa_status,
   fa_genres,
   fa_themes,
-  fa_demographics
+  fa_demographics,
 } from "../../utils/translations";
+import Navbar from "../Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMediaQuery } from "@mui/material";
 
 const AnimePage = () => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,9 @@ const AnimePage = () => {
   const [animeDetails, setAnimeDetails] = useState([]);
   const params = useParams();
   const animeId = params.animeId;
+  const color = animeData.cover_color ? animeData.cover_color : "cyan";
+  document.documentElement.style.setProperty("--color-anime-cover", color);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     axios
@@ -38,7 +44,11 @@ const AnimePage = () => {
             <>
               {i >= 1 && ", "}
               {table[id] && (
-                <a key={id} title={table[id]["fa"]} href={`/anime/${section}/${id}/${table[id]["en"]}`}>
+                <a
+                  key={id}
+                  title={table[id]["fa"]}
+                  href={`/anime/${section}/${id}/${table[id]["en"]}`}
+                >
                   {table[id]["fa"]}
                 </a>
               )}
@@ -60,7 +70,11 @@ const AnimePage = () => {
           {
             "ژانر ها": ids_to_text(data.genres, "genre", fa_genres),
             تم: ids_to_text(data.themes, "theme", fa_themes),
-            دموگرافیک: ids_to_text(data.demographics, "demographic", fa_demographics),
+            دموگرافیک: ids_to_text(
+              data.demographics,
+              "demographic",
+              fa_demographics
+            ),
           },
         ];
         setAnimeDetails(animeDetailsTemp);
@@ -72,6 +86,7 @@ const AnimePage = () => {
   }, []);
   return (
     <div>
+      <Navbar />
       {loading ? (
         <div
           style={{
@@ -88,7 +103,10 @@ const AnimePage = () => {
           />
         </div>
       ) : (
-        <div style={{ overflowX: "hidden" }} className="anime-page">
+        <div
+          style={{ overflowX: "hidden", marginTop: "75px" }}
+          className="anime-page"
+        >
           <Helmet>
             <title>{animeData.title[1]} | AW_DL</title>
           </Helmet>
@@ -105,7 +123,24 @@ const AnimePage = () => {
             <div className="container" style={{ minHeight: "250px" }}>
               <div className="content" dir="rtl">
                 <h1>{animeData.title[1]}</h1>
-                <p className="description">{animeData.synopsis}</p>
+                {!isMobile && (
+                  <p className="summary">
+                    خلاصه داستان:
+                    <p className="description">{animeData.synopsis}</p>
+                  </p>
+                )}
+                <Button
+                  variant="outlined"
+                  className="tg_btn"
+                  href={`https://t.me/AnimWorldDL/${animeData.tg_main_post}`}
+                >
+                  مشاهده پست تلگرامی
+                  <FontAwesomeIcon
+                    icon={["fab", "telegram"]}
+                    size="lg"
+                    className="mr4"
+                  />
+                </Button>
               </div>
 
               <div className="cover-wrap overlap-banner">
@@ -123,6 +158,13 @@ const AnimePage = () => {
           </div>
 
           <div className="anime-details" dir="rtl">
+            {isMobile && (
+              <p className="summary">
+                <h4> خلاصه داستان:</h4>
+
+                <p className="description">{animeData.synopsis}</p>
+              </p>
+            )}
             <h4>اطلاعات بیشتر</h4>
 
             {animeDetails.map((section, idx) => (
@@ -134,7 +176,7 @@ const AnimePage = () => {
                 {console.log("section", section)}
                 {Object.entries(section).map(([label, value]) => (
                   <div key={label}>
-                    <span>{label}:</span>
+                    <span className="label">{label}:</span>
                     <span>{value ? value : "نامشخص"}</span>
                   </div>
                 ))}

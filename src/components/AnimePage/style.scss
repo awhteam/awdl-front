@@ -7,6 +7,10 @@
     background-size: cover;
     height: 400px;
     margin-top: -58px;
+    @media (max-width: 760px) {
+      height: 210px;
+      margin-top: 0;
+    }
     .shadow {
       background: linear-gradient(
         180deg,
@@ -34,6 +38,14 @@
         padding-left: 50px;
         padding-right: 50px;
       }
+      .cover-wrap-inner {
+        @media (max-width: 760px) {
+          display: grid;
+          grid-template-columns: 100px auto;
+          grid-gap: 20px;
+          align-items: flex-end;
+        }
+      }
       .cover-wrap {
         position: relative;
       }
@@ -47,39 +59,62 @@
         box-shadow: 0 0 29px rgba(49, 54, 68, 0.25);
         margin-top: 15px;
         width: 100%;
+        @media (max-width: 760px) {
+          max-width: 100px;
+        }
       }
       .content {
         display: inline-grid;
         grid-template-rows: -webkit-min-content -webkit-min-content auto;
         grid-template-rows: min-content min-content auto;
         padding-top: 25px;
-        .description {
-          color: rgb(122, 133, 143);
-          font-size: 12;
-          line-height: 1.5;
-          margin: 0;
-          max-width: 900px;
-          padding: 15px 0;
-          transition: 0.2s;
+        .summary {
+          margin-top: 10px;
+          .description {
+              color: rgb(122, 133, 143);
+              font-size: 12;
+              line-height: 1.5;
+              margin: 0;
+              max-width: 900px;
+              padding: 15px 0;
+              transition: 0.2s;
+           
+            }
+        }
+      }
+      h1 {
+        @media (max-width: 760px) {
+          font-size: 16px;
+          font-weight: 500;
+          margin-bottom: 50px;
         }
       }
     }
   }
 
   .anime-details {
-    padding: 10px 250px;
+    max-width: 1400px;
+    padding: 10px 10px;
     display: flex;
     flex-direction: row;
-    .section {
-      padding-left: 120px;
-      padding-right: 10px;
-      line-height: 1.5rem;
-      div {
-        justify-content: center;
-        text-align: right;
+    @media (max-width: 760px) {
+    flex-direction: column;
 
+    }
+    .section {
+      padding-left: 130px;
+      padding-right: 10px;
+      line-height: 2rem;
+      div {
+        text-align: right;
+        display: flex;
         span {
-          min-width: 60px;
+          a {
+            color: color(anime-cover);
+          }
+          &.label {
+            min-width: 110px;
+          }
           display: inline-block;
           text-align: right;
         }
@@ -88,6 +123,32 @@
       margin-top: 50px;
       flex-direction: column;
       font-size: 10;
+
+      
     }
+
+
+    .summary {
+        margin-bottom: 10px;
+
+        .description {
+            color: rgb(122, 133, 143);
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            max-width: 900px;
+            padding: 15px 0;
+            transition: 0.2s;
+         
+          }
+      }
   }
+}
+
+
+
+.tg_btn{
+    width: 190px;
+    height: 50px;
+ 
 }

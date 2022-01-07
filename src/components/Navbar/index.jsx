@@ -10,6 +10,11 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Slide from "@mui/material/Slide";
+
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 
@@ -50,11 +55,11 @@ const Navbar = () => {
     },
     {
       label: "سریالی ها",
-      props: { component: Link, to: "anime/series" },
+      props: { component: "a", href: "/anime/top?format=tv" },
     },
     {
       label: "سینمایی ها",
-      props: { component: Link, to: "anime/movies" },
+      props: { component: "a", href: "/anime/top?format=movie" },
     },
   ];
   const DesktopNavbar = () => {
@@ -97,8 +102,8 @@ const Navbar = () => {
           {Object.entries(fa_genres).map(([id, genre], i) => (
             <MenuItem
               dir="rtl"
-              component={Link}
-              to={`/anime/genre/${id}/${genre["en"]}`}
+              component={Button}
+              href={`/anime/genre/${id}/${genre["en"]}`}
             >
               {genre["fa"]}
             </MenuItem>
@@ -220,8 +225,8 @@ const Navbar = () => {
             <MenuItem
               dir="rtl"
               sx={{ width: "100%" }}
-              component={Link}
-              to={`/anime/genre/${id}/${genre["en"]}`}
+              component={Button}
+              href={`/anime/genre/${id}/${genre["en"]}`}
             >
               {genre["fa"]}
             </MenuItem>
@@ -231,12 +236,15 @@ const Navbar = () => {
     );
   };
 
+  const trigger = useScrollTrigger();
   return (
-    <div className="Navbar">
-      <ThemeProvider theme={customTheme}>
-        {useMobile() ? <MobileNavbar /> : <DesktopNavbar />}
-      </ThemeProvider>
-    </div>
+    <Slide appear={false} direction="down" in={!trigger} >
+      <div className="Navbar">
+        <ThemeProvider theme={customTheme}>
+          {useMobile() ? <MobileNavbar /> : <DesktopNavbar />}
+        </ThemeProvider>
+      </div>
+    </Slide>
   );
 };
 

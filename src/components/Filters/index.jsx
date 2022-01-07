@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import "./style.scss";
-
+import { useLocation } from "react-router-dom";
 import * as React from "react";
 import {
   Box,
@@ -21,6 +21,7 @@ import {
   fa_formats,
   fa_seasons,
   fa_genres,
+  fa_status,
   fa_themes,
   fa_demographics,
   fa_sections,
@@ -89,7 +90,7 @@ export const Genres = () => {
     <div style={{ overflowX: "hidden" }}>
       <Navbar />
 
-      <div style={{marginTop:"100px"}}>
+      <div style={{ marginTop: "100px" }}>
         {loading ? (
           <div
             style={{
@@ -122,13 +123,107 @@ export const Genres = () => {
                   underline="hover"
                   key="2"
                   color="inherit"
-                  href={`/anime/`}
+                  href={`/anime/top`}
                 >
-                  انیمه ها
+                  بهترین انیمه ها
                 </Link>
                 <Typography key="3" color="text.primary">
                   {fa_sections[section]} {faTitle}
                 </Typography>
+              </Breadcrumbs>
+
+              <MALCardLayout animeList={animeList} />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const TopAnimes = () => {
+  const params = useParams();
+  const format = params.format;
+  const [loading, setLoading] = useState(true);
+  const [animeData, setAnimeData] = useState([]);
+  const search = useLocation().search;
+  const urlSearch = new URLSearchParams(search);
+  const urlParams = {};
+  urlSearch.forEach((key, value) => (urlParams[key] = value));
+  const table = {
+    season: fa_seasons,
+    format: fa_formats,
+    status: fa_status
+  };
+  const urlParamKeys = Object.values(urlParams);
+  const urlKey = urlParamKeys[0];
+  console.log(urlKey);
+  useEffect(() => {
+    axios
+      .get(`${baseUrl}/anime/top?${search}`)
+      .then((response) => {
+        console.log("animeData ", response.data);
+        setAnimeData(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("error: ", err);
+      });
+  }, []);
+
+  const animeList = animeData.data;
+  return (
+    <div style={{ overflowX: "hidden" }}>
+      <Navbar />
+
+      <div style={{ marginTop: "100px" }}>
+        {loading ? (
+          <div
+            style={{
+              padding: "100px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <ReactLoading
+              type="spinningBubbles"
+              color="blue"
+              height={100}
+              width={100}
+            />
+          </div>
+        ) : (
+          <>
+          
+            <div className="mal-card-layout">
+              <Breadcrumbs
+                dir="rtl"
+                separator={<NavigateBeforeIcon fontSize="small" />}
+              >
+                <Link underline="hover" key="1" color="inherit" href="/">
+                  خانه
+                </Link>
+                {urlParamKeys.length == 1 ? (
+                  <Link
+                    underline="hover"
+                    key="2"
+                    color="inherit"
+                    href={`/anime/top`}
+                  >
+                    بهترین انیمه ها
+                  </Link>
+                ) : (
+                  <Typography key="2" color="text.primary">
+                    بهترین انیمه ها
+                  </Typography>
+                )}
+                {urlParamKeys.length == 1 && (
+                  <Typography key="3" color="text.primary">
+                    {table[urlKey]
+                      ? table[urlKey][urlSearch.get(urlKey).toUpperCase()]
+                      : urlSearch.get(urlKey)}
+                  </Typography>
+                )}
               </Breadcrumbs>
 
               <MALCardLayout animeList={animeList} />

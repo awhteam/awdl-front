@@ -2,6 +2,7 @@
 @import "./colors.scss";
 @import "./settings.scss";
 @import "font-awesome/css/font-awesome.min.css";
+@import './anime_colors';
 
 // reset common styles
 * {
@@ -77,4 +78,9 @@ $color-highlight: lighten($c-gray-95, 7%);
     scrollbar-face-color: $foreground-color;
     scrollbar-track-color: $background-color;
   }
+}
+
+
+@function color($color-name) {
+  @return var(--color-#{$color-name});
 }
