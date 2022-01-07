@@ -3,17 +3,17 @@
   "name": "AnimWorlddl webapp",
   "icons": [
     {
-      "src": "iconx/favicon.ico",
+      "src": "iconx3/favicon2.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "iconx/logo192.png",
+      "src": "iconx3/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "iconx/logo512.png",
+      "src": "iconx3/logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
