@@ -32,10 +32,10 @@ export const fa_genres = {
     en: "Avant Garde",
     fa: "فسلفی",
   },
-  46: {
-    en: "Award Winning",
-    fa: "برنده جایزه",
-  },
+  // 46: {
+  //   en: "Award Winning",
+  //   fa: "برنده جایزه",
+  // },
   28: {
     en: "Boys Love",
     fa: "شونن آی ",
@@ -54,11 +54,11 @@ export const fa_genres = {
   },
   26: {
     en: "Girls Love",
-    fa: "شوجوآی ",
+    fa: "شوجو آی ",
   },
   47: {
     en: "Gourmet",
-    fa: "خوشمزه",
+    fa: "خوراکی",
   },
   14: {
     en: "Horror",
@@ -92,9 +92,13 @@ export const fa_genres = {
     en: "Suspense",
     fa: "رمزآلود",
   },
-  48: {
-    en: "Work Life",
-    fa: "زندگی حرفه‌ای",
+  // 48: {
+  //   en: "Work Life",
+  //   fa: "زندگی حرفه‌ای",
+  // },
+  9: {
+    en: "Ecchi",
+    fa: "اچی",
   },
 };
 

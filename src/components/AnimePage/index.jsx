@@ -166,22 +166,23 @@ const AnimePage = () => {
               </p>
             )}
             <h3>اطلاعات بیشتر</h3>
-
-            {animeDetails.map((section, idx) => (
-              <div
-                key={idx}
-                className="section"
-                style={{ borderRight: `5px solid ${animeData.cover_color}` }}
-              >
-                {console.log("section", section)}
-                {Object.entries(section).map(([label, value]) => (
-                  <div key={label}>
-                    <span className="label">{label}:</span>
-                    <span>{value ? value : "نامشخص"}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
+            <div className="anime-details__data">
+              {animeDetails.map((section, idx) => (
+                <div
+                  key={idx}
+                  className="section"
+                  style={{ borderRight: `5px solid ${animeData.cover_color}` }}
+                >
+                  {console.log("section", section)}
+                  {Object.entries(section).map(([label, value]) => (
+                    <div key={label}>
+                      <span className="label">{label}:</span>
+                      <span>{value ? value : "نامشخص"}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
