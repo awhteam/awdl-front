@@ -92,6 +92,7 @@ const Navbar = () => {
             </div>
           </Toolbar>
         </AppBar>
+        <Toolbar />
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -103,7 +104,7 @@ const Navbar = () => {
             <MenuItem
               dir="rtl"
               component={Button}
-              href={`/anime/genre/${id}/${genre["en"]}`}
+              href={`/anime/genre/${id}/${genre["en"].replace(/ /g,"_")}`}
             >
               {genre["fa"]}
             </MenuItem>
@@ -179,6 +180,7 @@ const Navbar = () => {
             </div>
           </Toolbar>
         </MobileAppBar>
+        <Toolbar />
         <Drawer
           sx={{
             width: drawerWidth,

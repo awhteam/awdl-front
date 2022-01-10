@@ -25,6 +25,8 @@ const AnimePage = () => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
   const [animeDetails, setAnimeDetails] = useState([]);
+  const [animeTitle, setAnimeTitle] = useState(null);
+
   const params = useParams();
   const animeId = params.animeId;
   const color = animeData.cover_color ? animeData.cover_color : "cyan";
@@ -37,6 +39,7 @@ const AnimePage = () => {
       .then((response) => {
         const data = response.data;
         console.log("animeData ", data);
+        setAnimeTitle(data.title[1] ?? data.title[0]);
         setAnimeData(data);
         const translate = (val, table) => (table[val] ? table[val] : val);
         const ids_to_text = (ids, section, table) => {
@@ -47,7 +50,7 @@ const AnimePage = () => {
                 <a
                   key={id}
                   title={table[id]["fa"]}
-                  href={`/anime/${section}/${id}/${table[id]["en"]}`}
+                  href={`/anime/${section}/${id}/${table[id]["en"].replace(/ /g,"_")}`}
                 >
                   {table[id]["fa"]}
                 </a>
@@ -104,11 +107,11 @@ const AnimePage = () => {
         </div>
       ) : (
         <div
-          style={{ overflowX: "hidden", marginTop: "75px" }}
+          style={{ overflowX: "hidden"}}
           className="anime-page"
         >
           <Helmet>
-            <title>{animeData.title[1]} | AW_DL</title>
+            <title>{`${animeTitle} | AW_DL`}</title>
           </Helmet>
           <div
             className="banner"
@@ -122,7 +125,7 @@ const AnimePage = () => {
           <div className="header">
             <div className="container" style={{ minHeight: "250px" }}>
               <div className="content" dir="rtl">
-                <h1>{animeData.title[1]}</h1>
+                <h1>{animeTitle}</h1>
                 {!isMobile && (
                   <p className="summary">
                     خلاصه داستان:
@@ -173,7 +176,6 @@ const AnimePage = () => {
                   className="section"
                   style={{ borderRight: `5px solid ${animeData.cover_color}` }}
                 >
-                  {console.log("section", section)}
                   {Object.entries(section).map(([label, value]) => (
                     <div key={label}>
                       <span className="label">{label}:</span>

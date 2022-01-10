@@ -74,7 +74,7 @@ export const MALCard = ({ anime }) => {
                 label={fa_genres[genre]["fa"]}
                 size="small"
                 component={"a"}
-                href={`/anime/genre/${genre}/${fa_genres[genre]["en"]}`}
+                href={`/anime/genre/${genre}/${fa_genres[genre]["en"].replace(/ /g,"_")}`}
                 key={i}
               />
             )

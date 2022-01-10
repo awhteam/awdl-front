@@ -9,15 +9,19 @@ import {
   ThemeProvider,
   responsiveFontSizes,
 } from "@mui/material/styles";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
-
 library.add(fab, fas, far);
 
 let theme = createTheme({
+  palette: {
+    primary: {
+      main: "#255dad",
+    },
+  },
   typography: {
     fontFamily: "iranyekan, Arial",
   },

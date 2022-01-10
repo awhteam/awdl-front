@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import "./style.scss";
-import { useLocation } from "react-router-dom";
 import * as React from "react";
 import {
   Box,
@@ -29,31 +28,23 @@ import {
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { useParams } from "react-router";
 import Navbar from "../Navbar";
-
-const createData = (input) => {
-  const anime = input;
-  console.log("anime", anime);
-  return {
-    mal_id: anime.mal_id,
-    title: anime.title,
-    studio: anime.producers,
-    epi: anime.episodes,
-    source: anime.source,
-    genres: anime.genres.slice(0, 5),
-    poster: anime.image_url.replace("cdn.myanimelist.net", "api.awdl.ml"),
-    synopsis: anime.synopsis,
-    release_date: anime.airing_start,
-    type: anime.type,
-    score: anime.score,
-    members: anime.members,
-  };
-};
+import Pagination from "@mui/material/Pagination";
+import { useLocation, useHistory } from "react-router-dom";
 
 export const Genres = () => {
   const params = useParams();
+  const history = useHistory();
   const sectionId = params.sectionId;
   const section = params.section;
+  const search = useLocation().search;
+  const urlSearch = new URLSearchParams(search);
+  const [page, setPage] = React.useState(parseInt(urlSearch.get("page")) || 1);
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    history.push(`?page=${value}`);
+    window.location.reload();
+  };
   const tables = {
     genre: fa_genres,
     theme: fa_themes,
@@ -63,10 +54,10 @@ export const Genres = () => {
   const [animeData, setAnimeData] = useState([]);
   const [title, setTitle] = useState([]);
   const [faTitle, setFaTitle] = useState([]);
-
+  
   useEffect(() => {
     axios
-      .get(`${baseUrl}/anime/${section}/${sectionId}/0`)
+      .get(`${baseUrl}/anime/${section}/${sectionId}?page=${page}`)
       .then((response) => {
         console.log("animeData ", response.data);
         setAnimeData(response.data);
@@ -86,11 +77,13 @@ export const Genres = () => {
   }, []);
 
   const animeList = animeData.data;
+  const pageCounts = Math.ceil(animeData.total / 18);
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <Navbar />
 
-      <div style={{ marginTop: "100px" }}>
+      <div style={{ marginTop: "20px" }}>
         {loading ? (
           <div
             style={{
@@ -133,6 +126,15 @@ export const Genres = () => {
               </Breadcrumbs>
 
               <MALCardLayout animeList={animeList} />
+              {pageCounts > 0 && (
+                <Pagination
+                  page={page}
+                  className="pagination"
+                  onChange={handlePageChange}
+                  color="primary"
+                  count={pageCounts}
+                />
+              )}
             </div>
           </>
         )}
@@ -142,20 +144,31 @@ export const Genres = () => {
 };
 
 export const TopAnimes = () => {
-  const params = useParams();
-  const format = params.format;
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
   const search = useLocation().search;
   const urlSearch = new URLSearchParams(search);
+  const [page, setPage] = React.useState(parseInt(urlSearch.get("page")) || 1);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    urlSearch.set("page", value);
+    history.push(`?${urlSearch.toString()}`);
+    window.location.reload();
+  };
+
   const urlParams = {};
-  urlSearch.forEach((key, value) => (urlParams[key] = value));
+  urlSearch.forEach((value, key) => {
+    if (key != "page") urlParams[key] = value;
+  });
+  console.log(" urlParams", urlParams);
   const table = {
     season: fa_seasons,
     format: fa_formats,
-    status: fa_status
+    status: fa_status,
   };
-  const urlParamKeys = Object.values(urlParams);
+  const urlParamKeys = Object.keys(urlParams);
   const urlKey = urlParamKeys[0];
   console.log(urlKey);
   useEffect(() => {
@@ -172,11 +185,12 @@ export const TopAnimes = () => {
   }, []);
 
   const animeList = animeData.data;
+  const pageCounts = Math.ceil(animeData.total / 18);
   return (
     <div style={{ overflowX: "hidden" }}>
       <Navbar />
 
-      <div style={{ marginTop: "100px" }}>
+      <div style={{ marginTop: "20px" }}>
         {loading ? (
           <div
             style={{
@@ -194,7 +208,6 @@ export const TopAnimes = () => {
           </div>
         ) : (
           <>
-          
             <div className="mal-card-layout">
               <Breadcrumbs
                 dir="rtl"
@@ -227,64 +240,16 @@ export const TopAnimes = () => {
               </Breadcrumbs>
 
               <MALCardLayout animeList={animeList} />
+
+              <Pagination
+                page={page}
+                className="pagination"
+                onChange={handlePageChange}
+                color="primary"
+                count={pageCounts}
+              />
             </div>
           </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export const Producers = () => {
-  const params = useParams();
-  const producer = params.producerId;
-  const [loading, setLoading] = useState(true);
-  const [animeRawData, setAnimeRawData] = useState([]);
-  useEffect(() => {
-    axios
-      .get(`https://api.jikan.moe/v3/producer/${producer}/1`)
-      .then((response) => {
-        console.log("animeData ", response.data.anime);
-        setAnimeRawData(response.data.anime);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log("error: ", err);
-      });
-  }, []);
-
-  const animeList = animeRawData.map(createData);
-  return (
-    <div style={{ overflowX: "hidden" }}>
-      <Helmet>
-        <title>هاردساب انیمه | AW_DL</title>
-      </Helmet>
-      <div>
-        <Typography
-          component="div"
-          style={{ textAlign: "right", margin: "50px" }}
-          variant="h5"
-          dir="rtl"
-        >
-          انیمه های استودیو {params.producerName}
-        </Typography>
-        {loading ? (
-          <div
-            style={{
-              padding: "100px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <ReactLoading
-              type="spinningBubbles"
-              color="#255DAD"
-              height={100}
-              width={100}
-            />
-          </div>
-        ) : (
-          <MALCardLayout animeList={animeList.slice(0, 10)} />
         )}
       </div>
     </div>

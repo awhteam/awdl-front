@@ -81,7 +81,7 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
-      <div style={{ marginTop: "100px" }}>
+      <div style={{ marginTop: "40px" }}>
         <HomePageSlider title="بهترین انیمه ها" url="/20anime/top" />
       </div>
       <HomePageSlider title="جدیدترین ها" url="/20anime/recent/added" />

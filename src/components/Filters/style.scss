@@ -1,15 +1,20 @@
 .mal-card-layout {
-    @media (min-width: 1100px) {
-      max-width: 1100px;
-    }
-  
-    @media (min-width: 700px) and (max-width: 1050px) {
-      max-width: 700px;
-    }
-    @media  (max-width: 700px) {
-      max-width: 400px;
-    }
-  
-    margin:auto;
-    margin-top: 10px;
+  @media (min-width: 1100px) {
+    max-width: 1100px;
   }
+
+  @media (min-width: 700px) and (max-width: 1050px) {
+    max-width: 700px;
+  }
+  @media (max-width: 700px) {
+    max-width: 400px;
+  }
+
+  margin: auto;
+  margin-top: 10px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+}
