@@ -11,9 +11,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Slide from "@mui/material/Slide";
+import SearchIcon from "@mui/icons-material/Search";
 
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
@@ -55,11 +54,11 @@ const Navbar = () => {
     },
     {
       label: "سریالی ها",
-      props: { component: "a", href: "/anime/top?format=tv" },
+      props: { component: Link, to: "/anime/top?format=tv" },
     },
     {
       label: "سینمایی ها",
-      props: { component: "a", href: "/anime/top?format=movie" },
+      props: { component: Link, to: "/anime/top?format=movie" },
     },
   ];
   const DesktopNavbar = () => {
@@ -89,6 +88,9 @@ const Navbar = () => {
                   <span style={{ marginRight: "5px" }}>{item.label}</span>
                 </Button>
               ))}
+              <IconButton component={Link} to="/search">
+                <SearchIcon />
+              </IconButton>
             </div>
           </Toolbar>
         </AppBar>
@@ -103,8 +105,8 @@ const Navbar = () => {
           {Object.entries(fa_genres).map(([id, genre], i) => (
             <MenuItem
               dir="rtl"
-              component={Button}
-              href={`/anime/genre/${id}/${genre["en"].replace(/ /g,"_")}`}
+              component={Link}
+              to={`/anime/genre/${id}/${genre["en"].replace(/ /g, "_")}`}
             >
               {genre["fa"]}
             </MenuItem>
@@ -169,11 +171,14 @@ const Navbar = () => {
           <Toolbar dir="rtl">
             <Logo />
             <div style={{ marginRight: "auto" }}>
+              <IconButton component={Link} to="/search">
+                <SearchIcon />
+              </IconButton>
               <IconButton
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
                 edge="start"
-                sx={{ mr: 2, ...(open && { display: "none" }) }}
+                sx={{ mr: 1, ...(open && { display: "none" }) }}
               >
                 <MenuIcon />
               </IconButton>
@@ -227,8 +232,8 @@ const Navbar = () => {
             <MenuItem
               dir="rtl"
               sx={{ width: "100%" }}
-              component={Button}
-              href={`/anime/genre/${id}/${genre["en"]}`}
+              component={Link}
+              to={`/anime/genre/${id}/${genre["en"]}`}
             >
               {genre["fa"]}
             </MenuItem>
@@ -240,7 +245,7 @@ const Navbar = () => {
 
   const trigger = useScrollTrigger();
   return (
-    <Slide appear={false} direction="down" in={!trigger} >
+    <Slide appear={false} direction="down" in={!trigger}>
       <div className="Navbar">
         <ThemeProvider theme={customTheme}>
           {useMobile() ? <MobileNavbar /> : <DesktopNavbar />}

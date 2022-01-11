@@ -43,7 +43,6 @@ export const Genres = () => {
   const handlePageChange = (event, value) => {
     setPage(value);
     history.push(`?page=${value}`);
-    window.location.reload();
   };
   const tables = {
     genre: fa_genres,
@@ -54,8 +53,9 @@ export const Genres = () => {
   const [animeData, setAnimeData] = useState([]);
   const [title, setTitle] = useState([]);
   const [faTitle, setFaTitle] = useState([]);
-  
+
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${baseUrl}/anime/${section}/${sectionId}?page=${page}`)
       .then((response) => {
@@ -74,7 +74,7 @@ export const Genres = () => {
       .catch((err) => {
         console.log("error: ", err);
       });
-  }, []);
+  }, [page,section,sectionId]);
 
   const animeList = animeData.data;
   const pageCounts = Math.ceil(animeData.total / 18);
@@ -126,15 +126,13 @@ export const Genres = () => {
               </Breadcrumbs>
 
               <MALCardLayout animeList={animeList} />
-              {pageCounts > 0 && (
-                <Pagination
-                  page={page}
-                  className="pagination"
-                  onChange={handlePageChange}
-                  color="primary"
-                  count={pageCounts}
-                />
-              )}
+              <Pagination
+                page={page}
+                className="pagination"
+                onChange={handlePageChange}
+                color="primary"
+                count={pageCounts}
+              />
             </div>
           </>
         )}
@@ -155,7 +153,6 @@ export const TopAnimes = () => {
     setPage(value);
     urlSearch.set("page", value);
     history.push(`?${urlSearch.toString()}`);
-    window.location.reload();
   };
 
   const urlParams = {};
@@ -172,6 +169,7 @@ export const TopAnimes = () => {
   const urlKey = urlParamKeys[0];
   console.log(urlKey);
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${baseUrl}/anime/top${search}`)
       .then((response) => {
@@ -182,7 +180,7 @@ export const TopAnimes = () => {
       .catch((err) => {
         console.log("error: ", err);
       });
-  }, []);
+  }, [page,search]);
 
   const animeList = animeData.data;
   const pageCounts = Math.ceil(animeData.total / 18);

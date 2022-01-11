@@ -34,13 +34,12 @@ export const MALCard = ({ anime }) => {
   return (
     <div className="mal-card">
       <div className="mal-card__title">
-        <a
-          href={`/anime/${anime.mal_id}`}
-          target="_blank"
+        <Link
+          to={`/anime/${anime.mal_id}`}
           className="link-title"
         >
           {title}
-        </a>
+        </Link>
       </div>
       <div className="mal-card__prodsrc">
         <span className="producer">
@@ -48,13 +47,13 @@ export const MALCard = ({ anime }) => {
           {anime.studios_names && Object.entries(anime.studios_names).map(([studioId, studioName],i) => (
             <>
               {i >= 1 && ", "}
-              <a
-                href={`/anime/studio/${studioId}/${studioName}`}
+              <Link
+                to={`/anime/studio/${studioId}/${studioName}`}
                 title={studioName}
                 key={i}
               >
                 {studioName}
-              </a>
+              </Link>
             </>
           ))}
         </span>
@@ -73,8 +72,8 @@ export const MALCard = ({ anime }) => {
               <Chip
                 label={fa_genres[genre]["fa"]}
                 size="small"
-                component={"a"}
-                href={`/anime/genre/${genre}/${fa_genres[genre]["en"].replace(/ /g,"_")}`}
+                component={Link}
+                to={`/anime/genre/${genre}/${fa_genres[genre]["en"].replace(/ /g,"_")}`}
                 key={i}
               />
             )
@@ -105,7 +104,6 @@ export const MALCard = ({ anime }) => {
 };
 
 export const MALCardLayout = ({ animeList }) => {
-
 
   const customTheme = createTheme({
     typography: {
@@ -173,8 +171,8 @@ export const WideCard = ({ anime }) => {
             <Chip
               label={fa_genres[genre.mal_id]["fa"]}
               size="small"
-              component={"a"}
-              href={`/anime/genre/${genre.mal_id}/${
+              component={Link}
+              to={`/anime/genre/${genre.mal_id}/${
                 fa_genres[genre.mal_id]["en"]
               }`}
             />

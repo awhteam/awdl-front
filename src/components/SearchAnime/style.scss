@@ -1,0 +1,39 @@
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+  .search-wrap {
+    padding: 5px 10px;
+    background: rgb(251, 251, 251);
+    border-radius: 6px;
+    border: 3px solid #255DAD;
+    display: flex;
+    font-size: 1.3rem;
+    font-weight: 600;
+    align-items: center;
+    grid-gap: 12px;
+    height: 42px;
+    .search {
+      background: 0 0;
+      border: none;
+      color: rgb(58, 95, 128);
+      display: inline-block;
+      margin: 0;
+      outline: 0;
+      padding: 0;
+      width: 60vw;
+      max-width: 400px;
+      
+      
+    }
+    .close {
+      cursor: pointer;
+      transition: color 0.2s ease;
+      &:hover {
+        color: rgb(101, 123, 143);
+      }
+    }
+  }
+}
+
+

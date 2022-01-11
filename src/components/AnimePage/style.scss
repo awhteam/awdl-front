@@ -118,6 +118,7 @@
         span {
           a {
             color: color(anime-cover);
+            filter: brightness(70%);
           }
           &.label {
             min-width: 110px;
