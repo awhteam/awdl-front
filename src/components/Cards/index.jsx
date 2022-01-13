@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { numberWithCommas, convertDateToJalali } from "../../utils/helpers";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { baseUrl } from "../../utils/constants";
+import { baseUrl,cdnUrl } from "../../utils/constants";
 import {
   fa_formats,
   fa_seasons,
@@ -81,7 +81,7 @@ export const MALCard = ({ anime }) => {
       </div>
 
       <div className="mal-card__image">
-        <img src={`${baseUrl}${anime.cover_image}`} width="167" alt={title} />
+        <img src={`${cdnUrl}${anime.cover_image}`} width="167" alt={title} />
       </div>
 
       <div className="mal-card__synopsis">{anime.synopsis}</div>

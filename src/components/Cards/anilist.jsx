@@ -4,7 +4,7 @@ import SwiperCore, { Navigation, Keyboard } from "swiper/core";
 import "swiper/swiper-bundle.min.css";
 import { useMobile } from "../../utils/detectSource";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../utils/constants";
+import { baseUrl,cdnUrl } from "../../utils/constants";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Grid } from '@mui/material';
 
@@ -16,7 +16,7 @@ export const AnilistCard = ({ anime }) => {
     <div className="anilist-card">
     <Link className="content" to={`/anime/${anime.mal_id}`}>
       <div className="cover">
-        <img src={`${baseUrl}${anime.cover_image}`} />
+        <img src={`${cdnUrl}${anime.cover_image}`} />
       </div>
       <div className="title">{anime.title[1]?? anime.title[0]}</div>
     </Link>
