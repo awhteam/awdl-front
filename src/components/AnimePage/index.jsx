@@ -3,7 +3,7 @@ import "./style.scss";
 
 import * as React from "react";
 import { Box, ButtonGroup, Button, Grid, Typography } from "@mui/material";
-import { baseUrl } from "../../utils/constants";
+import { baseUrl, cdnUrl } from "../../utils/constants";
 import axios from "axios";
 import apiInstance from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
@@ -20,6 +20,11 @@ import {
 import Navbar from "../Navbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMediaQuery } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Link } from "react-router-dom";
 
 const AnimePage = () => {
   const [loading, setLoading] = useState(true);
@@ -32,6 +37,17 @@ const AnimePage = () => {
   const color = animeData.cover_color ? animeData.cover_color : "cyan";
   document.documentElement.style.setProperty("--color-anime-cover", color);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [expanded, setExpanded] = useState(false);
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const humanFileSize = (size) => {
+    var i = Math.floor(Math.log(size) / Math.log(1024));
+    return (
+      (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["MB", "GB", "TB"][i]
+    );
+  };
 
   useEffect(() => {
     axios
@@ -50,7 +66,10 @@ const AnimePage = () => {
                 <a
                   key={id}
                   title={table[id]["fa"]}
-                  href={`/anime/${section}/${id}/${table[id]["en"].replace(/ /g,"_")}`}
+                  href={`/anime/${section}/${id}/${table[id]["en"].replace(
+                    / /g,
+                    "_"
+                  )}`}
                 >
                   {table[id]["fa"]}
                 </a>
@@ -66,7 +85,7 @@ const AnimePage = () => {
             وضعیت: translate(data.status, fa_status),
           },
           {
-            "تعداد قسمت": data.episodes,
+            "تعداد قسمت‌ها": data.episodes,
             "زمان هر قسمت": data.duration + " دقیقه",
             منبع: data.source,
           },
@@ -106,17 +125,14 @@ const AnimePage = () => {
           />
         </div>
       ) : (
-        <div
-          style={{ overflowX: "hidden"}}
-          className="anime-page"
-        >
+        <div style={{ overflowX: "hidden" }} className="anime-page">
           <Helmet>
             <title>{`${animeTitle} | AW_DL`}</title>
           </Helmet>
           <div
             className="banner"
             style={{
-              backgroundImage: `url(${baseUrl}${animeData.banner_image})`,
+              backgroundImage: `url(${cdnUrl}${animeData.banner_image})`,
             }}
           >
             <div className="shadow"></div>
@@ -152,7 +168,7 @@ const AnimePage = () => {
                   style={{ position: "static" }}
                 >
                   <img
-                    src={`${baseUrl}${animeData.cover_image}`}
+                    src={`${cdnUrl}${animeData.cover_image}`}
                     className="cover"
                   />
                 </div>
@@ -185,6 +201,80 @@ const AnimePage = () => {
                 </div>
               ))}
             </div>
+            {animeData.files && (
+              <div className="download-box">
+                <h3>باکس دانلود</h3>
+
+                <div className="download-section">
+                  {Object.entries(animeData.files).map(([key, files], i) => {
+                    const fileSizes=Object.values(files).map((x) => x["filesize"]);
+                    const totalFileSize = fileSizes.reduce((a, b) => a + b);
+                    const avgFileSize = totalFileSize/fileSizes.length;
+                    return (
+                      <Accordion
+                        key={i}
+                        expanded={expanded === `panel${i}`}
+                        onChange={handleChange(`panel${i}`)}
+                      >
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
+                            کیفیت: {key}
+                          </Typography>
+                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
+                            میانگین حجم:{" "}
+                            <span dir="ltr">
+                              {humanFileSize(avgFileSize)}
+                            </span>
+                          </Typography>
+                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
+                            مجموع حجم:{" "}
+                            <span dir="ltr">
+                              {humanFileSize(totalFileSize)}
+                            </span>
+                          </Typography>
+
+                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
+                            هاردساب فارسی
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {Object.entries(files)
+                            .sort()
+                            .map(([epi, file], i) => (
+                              <div className="epi">
+                                قسمت {epi}:
+                                <span>
+                                  <Link
+                                    to={`watch/${file['msg_id']}`}
+                                  >
+                                    پخش آنلاین
+                                  </Link>
+                                </span>
+                                {/* <span>
+                        <FontAwesomeIcon
+                        icon={["fab", "telegram"]}
+                        className="mr4"
+                        />
+                        <a href={`https://t.me/AWHTarchive/${file['msg_id']}`}>
+                          دانلود از تلگرام
+                        </a>
+                        </span> */}
+                                {/* <span>
+                         {file['filename']}
+                        </span>
+
+                        <span>
+                         {file['filesize']}
+                        </span> */}
+                              </div>
+                            ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

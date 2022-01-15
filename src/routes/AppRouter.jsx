@@ -6,6 +6,7 @@ import { AllCards } from "../components/Cards";
 import { Genres,TopAnimes } from "../components/Filters";
 import AnimePage from "../components/AnimePage";
 import SearchAnime from "../components/SearchAnime";
+import WatchPage from "../components/WatchPage";
 
 const AppRouter = () => {
   return (
@@ -28,6 +29,9 @@ const AppRouter = () => {
         </Route>
         <Route path="/anime/:animeId([0-9]+)">
           <AnimePage />
+        </Route>
+        <Route path="/anime/watch/:msgId([0-9]+)">
+          <WatchPage />
         </Route>
         <Route path="/search">
           <SearchAnime />

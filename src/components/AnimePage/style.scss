@@ -91,13 +91,23 @@
   }
 
   .anime-details {
-    max-width: 1400px;
+    max-width: 1350px;
     @media (max-width: 760px) {
       margin-top: -40px;
     }
-  
+
+    // @media (min-width: 760px) {
+    //   margin-right: 200px;
+    // }
+
     padding: 10px 10px;
+
+    a {
+      color: color(anime-cover);
+      filter: brightness(70%);
+    }
     &__data {
+      margin-right: 50px;
       display: flex;
       flex-direction: row;
       @media (max-width: 760px) {
@@ -116,10 +126,7 @@
         text-align: right;
         display: flex;
         span {
-          a {
-            color: color(anime-cover);
-            filter: brightness(70%);
-          }
+         
           &.label {
             min-width: 110px;
           }
@@ -155,6 +162,22 @@
   @media (max-width: 760px) {
     margin-left: auto;
     margin-bottom: 10px;
+  }
+}
 
+.download-box {
+  margin-top: 50px;
+  margin-bottom: 200px;
+  .download-section {
+    margin: 10px 50px;
+    max-width: 1000px;
+    .epi {
+      padding: 10px;
+      span {
+        text-align: right;
+        direction: ltr;
+        padding: 0 10px;
+      }
+    }
   }
 }

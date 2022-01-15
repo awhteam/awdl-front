@@ -10,6 +10,8 @@ import {
   Typography,
   TextField,
   Switch,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { baseUrl } from "../../utils/constants";
 import axios from "axios";
@@ -22,6 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMediaQuery } from "@mui/material";
 import { AnilistCardLayout } from "../Cards/anilist";
 import { useLocation, useHistory } from "react-router-dom";
+import { FindInPage, SavedSearch } from "@mui/icons-material";
 
 const SearchAnime = () => {
   const [loading, setLoading] = useState(false);
@@ -30,16 +33,16 @@ const SearchAnime = () => {
   const history = useHistory();
   const search = useLocation().search;
   const urlSearch = new URLSearchParams(search);
-  const [query, setQuery] = useState(urlSearch.get("q")?? "");
+  const [query, setQuery] = useState(urlSearch.get("q") ?? "");
 
-  const handlePSearchChange = (event) => {
-    setPSearch(event.target.checked);
+  const handlePSearchChange = () => {
+    setPSearch(!pSearch);
   };
   const triggerSearch = (event) => {
     if (query == "") return;
     setLoading(true);
     axios
-      .get(`${baseUrl}/anime/search${pSearch ? "V2":""}?q=${query}`)
+      .get(`${baseUrl}/anime/search${pSearch ? "V2" : ""}?q=${query}`)
       .then((response) => {
         const data = response.data;
         setAnimeList(data.data);
@@ -50,7 +53,7 @@ const SearchAnime = () => {
         console.log("error", error);
       });
   };
-  useEffect(triggerSearch, [query,pSearch]);
+  useEffect(triggerSearch, [query, pSearch]);
 
   const handleChangeValue = (event) => {
     const q = event.target.value;
@@ -59,7 +62,6 @@ const SearchAnime = () => {
     }
     setQuery(q);
     history.push(`?q=${q}`);
-
   };
   const clearInput = () => {
     setQuery("");
@@ -91,10 +93,17 @@ const SearchAnime = () => {
             onClick={clearInput}
           />
         </div>
-        <div dir="rtl" style={{ maxWidth: "100px", marginTop: "-5px" }}>
+        <Tooltip title="سرچ دقیق">
+          <IconButton onClick={ handlePSearchChange } style={{ marginTop: "-5px" }}>
+            <SavedSearch fontSize="large" style={{color:pSearch?"#255DAD":"grey"}}/>
+          </IconButton>
+        </Tooltip>
+
+
+        {/* <div dir="rtl" style={{ maxWidth: "100px", marginTop: "-5px" }}>
           سرچ دقیق
           <Switch checked={pSearch} onChange={handlePSearchChange} />
-        </div>
+        </div> */}
       </div>
       <div>
         {loading ? (
@@ -125,11 +134,11 @@ const SearchAnime = () => {
                     color: "grey",
                     display: "flex",
                     justifyContent: "center",
-                    textAlign:'center'
+                    textAlign: "center",
                   }}
                 >
                   {query == ""
-                    ? "لطف کنید اسم انیمه مورد نظرتون رو وارد کنید"
+                    ? "اسم انیمه مورد نظرتون رو وارد کنید"
                     : "انیمه ای یافت نشد"}
                 </h2>
               </div>
