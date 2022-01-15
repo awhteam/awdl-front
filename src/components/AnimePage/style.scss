@@ -107,7 +107,7 @@
       filter: brightness(70%);
     }
     &__data {
-      margin-right: 50px;
+      margin-right: 10px;
       display: flex;
       flex-direction: row;
       @media (max-width: 760px) {
@@ -126,7 +126,6 @@
         text-align: right;
         display: flex;
         span {
-         
           &.label {
             min-width: 110px;
           }
@@ -169,8 +168,20 @@
   margin-top: 50px;
   margin-bottom: 200px;
   .download-section {
-    margin: 10px 50px;
-    max-width: 1000px;
+    margin: 10px 0px;
+    .MuiTypography-root {
+      width: 25%;
+      flex-shrink: 0;
+      @media (max-width: 760px) {
+        width: 33%;
+        padding: 0px 10px;
+      }
+    }
+    
+    @media (min-width: 1000px) {
+      margin: 10px 50px;
+      max-width: 1000px;
+    }
     .epi {
       padding: 10px;
       span {

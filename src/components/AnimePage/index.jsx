@@ -3,7 +3,12 @@ import "./style.scss";
 
 import * as React from "react";
 import { Box, ButtonGroup, Button, Grid, Typography } from "@mui/material";
-import { baseUrl, cdnUrl } from "../../utils/constants";
+import {
+  baseUrl,
+  cdnUrl,
+  mobileCheck,
+  getMobileOperatingSystem,
+} from "../../utils/constants";
 import axios from "axios";
 import apiInstance from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
@@ -38,6 +43,7 @@ const AnimePage = () => {
   document.documentElement.style.setProperty("--color-anime-cover", color);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [expanded, setExpanded] = useState(false);
+  const mobileOS = getMobileOperatingSystem();
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -201,15 +207,19 @@ const AnimePage = () => {
                 </div>
               ))}
             </div>
-            {animeData.files && (
+            {(animeData.files) && (
               <div className="download-box">
                 <h3>باکس دانلود</h3>
 
                 <div className="download-section">
                   {Object.entries(animeData.files).map(([key, files], i) => {
-                    const fileSizes=Object.values(files).map((x) => x["filesize"]);
+                    if(files['filesize'])
+                      return <div>فعلا سمت فرانتش اوکی نشده</div>
+                    const fileSizes = Object.values(files).map(
+                      (x) => x? x["filesize"]:0
+                    );
                     const totalFileSize = fileSizes.reduce((a, b) => a + b);
-                    const avgFileSize = totalFileSize/fileSizes.length;
+                    const avgFileSize = totalFileSize / fileSizes.length;
                     return (
                       <Accordion
                         key={i}
@@ -217,40 +227,61 @@ const AnimePage = () => {
                         onChange={handleChange(`panel${i}`)}
                       >
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
-                            کیفیت: {key}
-                          </Typography>
-                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
+                          <Typography>کیفیت: {key}</Typography>
+
+                          <Typography>
                             میانگین حجم:{" "}
-                            <span dir="ltr">
-                              {humanFileSize(avgFileSize)}
-                            </span>
-                          </Typography>
-                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
-                            مجموع حجم:{" "}
-                            <span dir="ltr">
-                              {humanFileSize(totalFileSize)}
-                            </span>
+                            <span dir="ltr">{humanFileSize(avgFileSize)}</span>
                           </Typography>
 
-                          <Typography sx={{ width: "25%", flexShrink: 0 }}>
-                            هاردساب فارسی
-                          </Typography>
+                          {!isMobile && (
+                            <Typography>
+                              مجموع حجم:{" "}
+                              <span dir="ltr">
+                                {humanFileSize(totalFileSize)}
+                              </span>
+                            </Typography>
+                          )}
+                          <Typography>هاردساب فارسی</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           {Object.entries(files)
                             .sort()
-                            .map(([epi, file], i) => (
-                              <div className="epi">
-                                قسمت {epi}:
-                                <span>
-                                  <Link
-                                    to={`watch/${file['msg_id']}`}
-                                  >
-                                    پخش آنلاین
-                                  </Link>
-                                </span>
-                                {/* <span>
+                            .map(([epi, file], i) => {
+                              if (!file) return <div>یافت نشد</div>;
+                              const fileName = encodeURIComponent(
+                                file["filename"]
+                              );
+                              const fileUrl = `https://dl.awdl.ml/watch/${file["msg_id"]}/${fileName}`;
+
+                              return (
+                                <div className="epi">
+                                  قسمت {epi}:
+                                  <span>
+                                    {mobileCheck() ? (
+                                      mobileOS === "iOS" ? (
+                                        <a
+                                          href={`vlc-x-callback://x-callback-url/stream?url=${fileUrl}`.replace(
+                                            /%20/g,
+                                            "_"
+                                          )}
+                                        >
+                                          پخش آنلاین
+                                        </a>
+                                      ) : (
+                                        <a
+                                          href={`intent:${fileUrl}#Intent;package=com.mxtech.videoplayer.ad;S.title=${fileName};b.decode_mode=2;end`}
+                                        >
+                                          پخش آنلاین
+                                        </a>
+                                      )
+                                    ) : (
+                                      <Link to={`watch/${file["msg_id"]}`}>
+                                        پخش آنلاین
+                                      </Link>
+                                    )}
+                                  </span>
+                                  {/* <span>
                         <FontAwesomeIcon
                         icon={["fab", "telegram"]}
                         className="mr4"
@@ -259,15 +290,16 @@ const AnimePage = () => {
                           دانلود از تلگرام
                         </a>
                         </span> */}
-                                {/* <span>
+                                  {/* <span>
                          {file['filename']}
                         </span>
 
                         <span>
                          {file['filesize']}
                         </span> */}
-                              </div>
-                            ))}
+                                </div>
+                              );
+                            })}
                         </AccordionDetails>
                       </Accordion>
                     );
