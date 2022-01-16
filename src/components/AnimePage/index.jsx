@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
 import * as React from "react";
-import { Box, ButtonGroup, Button, Grid, Typography } from "@mui/material";
+import { Box, ButtonGroup, Button, Modal, Typography } from "@mui/material";
 import {
   baseUrl,
   cdnUrl,
@@ -30,7 +30,126 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
+import { PlayCircleOutline } from "@mui/icons-material";
 
+const mobileOS = getMobileOperatingSystem();
+
+const humanFileSize = (size) => {
+  var i = Math.floor(Math.log(size) / Math.log(1024));
+  return (
+    (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["MB", "GB", "TB"][i]
+  );
+};
+
+const FileDownload = ({ title, file }) => {
+  const [openFM, setOpenFM] = useState(false);
+  const handleFileModal = () => {
+    setOpenFM(!openFM);
+  };
+  const FMStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const handleCloseFM = () => {
+    setOpenFM(false);
+  };
+  console.log("title", title);
+  if (!file) return <div>یافت نشد</div>;
+
+  const OnlinePlay = () => {
+    return (
+      <>
+        <span>پخش آنلاین</span>
+        <FontAwesomeIcon
+          icon={["far", "play-circle"]}
+          size="lg"
+          className="mr4 play-icon"
+        />
+      </>
+    );
+  };
+
+  const fileData = {
+    'نام فایل': file['filename'],
+    'اندازه فایل': humanFileSize(file['filesize']),
+  };
+
+  const fileName = encodeURIComponent(file["filename"]);
+  const fileUrl = `https://dl.awdl.ml/watch/${file["msg_id"]}/${fileName}`;
+  const fileDLUrl =
+    mobileOS === "iOS"
+      ? `vlc-x-callback://x-callback-url/stream?url=${fileUrl}`.replace(
+          /%20/g,
+          "_"
+        )
+      : `intent:${fileUrl}#Intent;package=com.mxtech.videoplayer.ad;S.title=${fileName};b.decode_mode=2;end`;
+  return (
+    <div className="epi">
+      {title}:
+      <span className="online-play-btn">
+        {mobileCheck() ? (
+          <a href={fileDLUrl}>
+            <OnlinePlay />
+          </a>
+        ) : (
+          <Link to={`watch/${file["msg_id"]}`}>
+            <OnlinePlay />
+          </Link>
+        )}
+      </span>
+      <span className="file-info-btn" onClick={handleFileModal}>
+        مشخصات فایل
+      </span>
+      <Modal open={openFM} onClose={handleCloseFM}>
+        <Box sx={FMStyle}  className="file-modal" dir="rtl">
+          <Typography variant="h6" component="h2" >
+            مشخصات فایل
+          </Typography>
+          <Typography sx={{ mt: 2 }} className="file-modal__data">
+            {Object.entries(fileData).map(([label, value]) => (
+              <div key={label}>
+                <div className="label">{label}:</div>
+                <div className="value">{value ? value : "نامشخص"}</div>
+              </div>
+            ))}
+          </Typography>
+        </Box>
+      </Modal>
+    </div>
+  );
+};
+
+const QualityDesc = ({ quality, files }) => {
+  const fileSizes = Object.values(files).map((x) => (x ? x["filesize"] : 0));
+  const totalFileSize = fileSizes.reduce((a, b) => a + b);
+  const avgFileSize = totalFileSize / fileSizes.length;
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  return (
+    <>
+      <Typography>کیفیت: {quality}</Typography>
+
+      <Typography>
+        میانگین حجم: <span dir="ltr">{humanFileSize(avgFileSize)}</span>
+      </Typography>
+
+      {!isMobile && (
+        <Typography>
+          مجموع حجم: <span dir="ltr">{humanFileSize(totalFileSize)}</span>
+        </Typography>
+      )}
+      <Typography>هاردساب فارسی</Typography>
+    </>
+  );
+};
 const AnimePage = () => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
@@ -42,17 +161,10 @@ const AnimePage = () => {
   const color = animeData.cover_color ? animeData.cover_color : "cyan";
   document.documentElement.style.setProperty("--color-anime-cover", color);
   const isMobile = useMediaQuery("(max-width: 768px)");
+
   const [expanded, setExpanded] = useState(false);
-  const mobileOS = getMobileOperatingSystem();
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-  };
-
-  const humanFileSize = (size) => {
-    var i = Math.floor(Math.log(size) / Math.log(1024));
-    return (
-      (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["MB", "GB", "TB"][i]
-    );
   };
 
   useEffect(() => {
@@ -207,103 +319,64 @@ const AnimePage = () => {
                 </div>
               ))}
             </div>
-            {(animeData.files) && (
+            {animeData.files && (
               <div className="download-box">
                 <h3>باکس دانلود</h3>
-
                 <div className="download-section">
-                  {Object.entries(animeData.files).map(([key, files], i) => {
-                    if(files['filesize'])
-                      return <div>فعلا سمت فرانتش اوکی نشده</div>
-                    const fileSizes = Object.values(files).map(
-                      (x) => x? x["filesize"]:0
-                    );
-                    const totalFileSize = fileSizes.reduce((a, b) => a + b);
-                    const avgFileSize = totalFileSize / fileSizes.length;
-                    return (
-                      <Accordion
-                        key={i}
-                        expanded={expanded === `panel${i}`}
-                        onChange={handleChange(`panel${i}`)}
-                      >
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                          <Typography>کیفیت: {key}</Typography>
-
-                          <Typography>
-                            میانگین حجم:{" "}
-                            <span dir="ltr">{humanFileSize(avgFileSize)}</span>
-                          </Typography>
-
-                          {!isMobile && (
-                            <Typography>
-                              مجموع حجم:{" "}
-                              <span dir="ltr">
-                                {humanFileSize(totalFileSize)}
-                              </span>
-                            </Typography>
-                          )}
-                          <Typography>هاردساب فارسی</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          {Object.entries(files)
-                            .sort()
-                            .map(([epi, file], i) => {
-                              if (!file) return <div>یافت نشد</div>;
-                              const fileName = encodeURIComponent(
-                                file["filename"]
-                              );
-                              const fileUrl = `https://dl.awdl.ml/watch/${file["msg_id"]}/${fileName}`;
-
-                              return (
-                                <div className="epi">
-                                  قسمت {epi}:
-                                  <span>
-                                    {mobileCheck() ? (
-                                      mobileOS === "iOS" ? (
-                                        <a
-                                          href={`vlc-x-callback://x-callback-url/stream?url=${fileUrl}`.replace(
-                                            /%20/g,
-                                            "_"
-                                          )}
-                                        >
-                                          پخش آنلاین
-                                        </a>
-                                      ) : (
-                                        <a
-                                          href={`intent:${fileUrl}#Intent;package=com.mxtech.videoplayer.ad;S.title=${fileName};b.decode_mode=2;end`}
-                                        >
-                                          پخش آنلاین
-                                        </a>
-                                      )
-                                    ) : (
-                                      <Link to={`watch/${file["msg_id"]}`}>
-                                        پخش آنلاین
-                                      </Link>
-                                    )}
-                                  </span>
-                                  {/* <span>
-                        <FontAwesomeIcon
-                        icon={["fab", "telegram"]}
-                        className="mr4"
-                        />
-                        <a href={`https://t.me/AWHTarchive/${file['msg_id']}`}>
-                          دانلود از تلگرام
-                        </a>
-                        </span> */}
-                                  {/* <span>
-                         {file['filename']}
-                        </span>
-
-                        <span>
-                         {file['filesize']}
-                        </span> */}
-                                </div>
-                              );
-                            })}
-                        </AccordionDetails>
-                      </Accordion>
-                    );
-                  })}
+                  {Object.values(animeData.files)[0]["filesize"] ? (
+                    <Accordion
+                      expanded={expanded === `panel`}
+                      onChange={handleChange(`panel`)}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        هاردساب فارسی
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        {Object.entries(animeData.files)
+                          .sort()
+                          .map(([q, file], i) => (
+                            <FileDownload
+                              title={`کیفیت ${q}`}
+                              file={file}
+                              key={i}
+                            />
+                          ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  ) : (
+                    <>
+                      {Object.entries(animeData.files).map(
+                        ([key, files], i) => {
+                          return (
+                            <Accordion
+                              key={i}
+                              expanded={expanded === `panel${i}`}
+                              onChange={handleChange(`panel${i}`)}
+                            >
+                              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <QualityDesc
+                                  quality={key}
+                                  files={files}
+                                  key={i}
+                                />
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                {Object.entries(files)
+                                  .sort()
+                                  .map(([epi, file], i) => (
+                                    <FileDownload
+                                      title={`قسمت ${epi}`}
+                                      file={file}
+                                      key={i}
+                                    />
+                                  ))}
+                              </AccordionDetails>
+                            </Accordion>
+                          );
+                        }
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             )}

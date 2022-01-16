@@ -102,16 +102,16 @@
 
     padding: 10px 10px;
 
-    a {
-      color: color(anime-cover);
-      filter: brightness(70%);
-    }
     &__data {
       margin-right: 10px;
       display: flex;
       flex-direction: row;
       @media (max-width: 760px) {
         flex-direction: column;
+      }
+      a {
+        color: color(anime-cover);
+        filter: brightness(70%);
       }
     }
     .section {
@@ -177,18 +177,66 @@
         padding: 0px 10px;
       }
     }
-    
+
     @media (min-width: 1000px) {
       margin: 10px 50px;
       max-width: 1000px;
     }
     .epi {
+      border: 3px solid rgb(223, 221, 221);
       padding: 10px;
-      span {
-        text-align: right;
-        direction: ltr;
-        padding: 0 10px;
+      display: flex;
+      align-items: center;
+      span:first-of-type {
+        margin-right: auto;
       }
+    }
+  }
+}
+
+$blue-color: rgb(7, 79, 146);
+.online-play-btn {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid $blue-color;
+  border-radius: 6px;
+  color: $blue-color;
+  a {
+    color: $blue-color;
+    padding: 5px;
+    &:hover {
+      color: rgba($blue-color, 0.6);
+    }
+  }
+  &:hover {
+    border-color: rgba($blue-color, 0.6);
+  }
+
+}
+
+.file-info-btn{
+  cursor: pointer;
+  color: color(anime-cover);
+  filter: brightness(70%);
+  margin-right: 10px;
+
+  @media (min-width: 760px) {
+    margin-left: 60px;
+    margin-right : 20px;
+
+  }
+}
+
+
+.file-modal{
+  &__data{
+    .label{
+      text-align: right;
+    }
+    .value{
+      direction: ltr;
+      text-align: left;
     }
   }
 }
