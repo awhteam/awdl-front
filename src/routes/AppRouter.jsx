@@ -15,9 +15,9 @@ const AppRouter = () => {
         <Route path="/" exact>
           <HomePage />
         </Route>
-        <Route path="/player">
+        {/* <Route path="/player">
           <Player />
-        </Route>
+        </Route> */}
         <Route path="/cards">
           <AllCards />
         </Route>

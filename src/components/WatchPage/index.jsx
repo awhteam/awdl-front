@@ -5,6 +5,7 @@ import "./style.scss";
 import ReactPlayer from "../Player/react-player";
 import VideoJS from "../Player/VideoJS";
 import Plyr from "../Player/PlyR";
+import {dlUrl} from '../../utils/constants'
 
 import {
   FormControl,
@@ -30,7 +31,7 @@ const WatchPage = () => {
     type: "video",
     sources: [
       {
-        src: `https://dl.awdl.ml/download/${msgId}`,
+        src: `${dlUrl}/watch/${msgId}`,
         type: "video/mp4",
       },
     ],

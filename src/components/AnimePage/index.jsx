@@ -6,6 +6,7 @@ import { Box, ButtonGroup, Button, Modal, Typography } from "@mui/material";
 import {
   baseUrl,
   cdnUrl,
+  dlUrl,
   mobileCheck,
   getMobileOperatingSystem,
 } from "../../utils/constants";
@@ -31,7 +32,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
 import { PlayCircleOutline } from "@mui/icons-material";
-
 const mobileOS = getMobileOperatingSystem();
 
 const humanFileSize = (size) => {
@@ -83,7 +83,7 @@ const FileDownload = ({ title, file }) => {
   };
 
   const fileName = encodeURIComponent(file["filename"]);
-  const fileUrl = `https://dl.awdl.ml/watch/${file["msg_id"]}/${fileName}`;
+  const fileUrl = `${dlUrl}/watch/${file["msg_id"]}/${fileName}`;
   const fileDLUrl =
     mobileOS === "iOS"
       ? `vlc-x-callback://x-callback-url/stream?url=${fileUrl}`.replace(
