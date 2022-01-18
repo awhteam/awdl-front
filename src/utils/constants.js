@@ -1,4 +1,4 @@
-export const baseUrl = "https://api.awdl.ml";
+export const baseUrl = "https://api.dklws8xmwj2x.tk";
 
 export const cdnUrl = "https://cdn.awdl.ml";
 
