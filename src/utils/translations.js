@@ -30,7 +30,7 @@ export const fa_genres = {
   },
   5: {
     en: "Avant Garde",
-    fa: "فسلفی",
+    fa: "فلسفی",
   },
   // 46: {
   //   en: "Award Winning",

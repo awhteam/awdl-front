@@ -27,9 +27,19 @@ let theme = createTheme({
   },
 });
 
+
 theme = responsiveFontSizes(theme);
 
 const helmetContext = {};
+
+// replace console.* for disable log on production
+if (process.env.NODE_ENV === 'production') {
+  console.log = () => {}
+  console.error = () => {}
+  console.debug = () => {}
+}
+
+
 function App() {
   return (
     <HelmetProvider context={helmetContext}>
