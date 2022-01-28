@@ -43,7 +43,7 @@ export const AnilistCardLayout = ({ animeList }) => {
 
   const customTheme = createTheme({
     typography: {
-      fontFamily: 'iranyekan, Arial',
+      fontFamily: 'Vazir, Arial',
     },
 
     breakpoints: {

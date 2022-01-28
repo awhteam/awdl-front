@@ -39,7 +39,7 @@ const Navbar = () => {
       },
     },
     typography: {
-      fontFamily: "iranyekan, Arial",
+      fontFamily: "Vazir, Arial",
     },
   });
 

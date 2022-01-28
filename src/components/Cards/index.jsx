@@ -107,7 +107,7 @@ export const MALCardLayout = ({ animeList }) => {
 
   const customTheme = createTheme({
     typography: {
-      fontFamily: 'iranyekan, Arial',
+      fontFamily: 'Vazir, Arial',
     },
 
     breakpoints: {

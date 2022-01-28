@@ -23,7 +23,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "iranyekan, Arial",
+    fontFamily: "Vazir , Arial",
   },
 });
 
