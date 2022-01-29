@@ -1,12 +1,11 @@
 export const baseUrl = "https://api.dklws8xmwj2x.tk";
 
-export const cdnUrl = "https://cdn.awdl.ml";
+export const originUrl= window.location.origin;
+
+export const cdnUrl = `https://cdn.awdl${originUrl.split('awdl')[1]??'2.ml'}`;
 
 export const dlUrl = "https://dl.sicw0dlsnvldawsq.tk";
 
-
-
-// export const baseUrl = 'https:/localhost:8000';
 
 export const mobileCheck = () => {
   let check = false;
@@ -43,3 +42,4 @@ export const getMobileOperatingSystem = () => {
 
   return "unknown";
 };
+
