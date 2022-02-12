@@ -2,7 +2,7 @@ export const baseUrl = "https://api.dklws8xmwj2x.tk";
 
 export const originUrl= window.location.origin;
 
-export const cdnUrl = `https://cdn.awdl${originUrl.split('awdl')[1]??'2.ml'}`;
+export const cdnUrl = `https://cdn.${originUrl.split('//')[1]??'awdl.ml'}`;
 
 export const dlUrl = "https://dl.sicw0dlsnvldawsq.tk";
 
