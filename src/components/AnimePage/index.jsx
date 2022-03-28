@@ -61,7 +61,6 @@ const FileDownload = ({ title, file }) => {
   const handleCloseFM = () => {
     setOpenFM(false);
   };
-  console.log("title", title);
   if (!file) return <div>یافت نشد</div>;
 
   const OnlinePlay = () => {
@@ -78,8 +77,8 @@ const FileDownload = ({ title, file }) => {
   };
 
   const fileData = {
-    'نام فایل': file['filename'],
-    'اندازه فایل': humanFileSize(file['filesize']),
+    "نام فایل": file["filename"],
+    "اندازه فایل": humanFileSize(file["filesize"]),
   };
 
   const fileName = encodeURIComponent(file["filename"]);
@@ -109,8 +108,8 @@ const FileDownload = ({ title, file }) => {
         مشخصات فایل
       </span>
       <Modal open={openFM} onClose={handleCloseFM}>
-        <Box sx={FMStyle}  className="file-modal" dir="rtl">
-          <Typography variant="h6" component="h2" >
+        <Box sx={FMStyle} className="file-modal" dir="rtl">
+          <Typography variant="h6" component="h2">
             مشخصات فایل
           </Typography>
           <Typography sx={{ mt: 2 }} className="file-modal__data">
@@ -128,10 +127,11 @@ const FileDownload = ({ title, file }) => {
 };
 
 const QualityDesc = ({ quality, files }) => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const fileSizes = Object.values(files).map((x) => (x ? x["filesize"] : 0));
+  if (fileSizes.length === 0) return null;
   const totalFileSize = fileSizes.reduce((a, b) => a + b);
   const avgFileSize = totalFileSize / fileSizes.length;
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <>
@@ -172,7 +172,6 @@ const AnimePage = () => {
       .get(`${baseUrl}/anime/${animeId}`)
       .then((response) => {
         const data = response.data;
-        console.log("animeData ", data);
         setAnimeTitle(data.title[1] ?? data.title[0]);
         setAnimeData(data);
         const translate = (val, table) => (table[val] ? table[val] : val);
@@ -347,6 +346,7 @@ const AnimePage = () => {
                     <>
                       {Object.entries(animeData.files).map(
                         ([key, files], i) => {
+                          if (Object.keys(files).length === 0) return null;
                           return (
                             <Accordion
                               key={i}
