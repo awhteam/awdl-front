@@ -34,9 +34,9 @@ const helmetContext = {};
 
 // replace console.* for disable log on production
 if (process.env.NODE_ENV === 'production') {
-  console.log = () => {}
-  console.error = () => {}
-  console.debug = () => {}
+  console.log = () => { }
+  console.error = () => { }
+  console.debug = () => { }
 }
 
 
@@ -55,5 +55,14 @@ function App() {
     </HelmetProvider>
   );
 }
+function AppHiatus() {
+  return (
+    <React.StrictMode>
+      <p dir="rtl">
+        با یه اسم دیگه بزودی برمیگردیم.
+      </p>
+    </React.StrictMode>
+  );
+}
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<AppHiatus />, document.getElementById("root"));
